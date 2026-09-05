@@ -35,70 +35,115 @@
     /* SISA CSS LAWAS SING GK ISO DIGANTI TAILWIND TAK PERTAHANKE */
     body{background:#f0fdf4;padding-bottom:20px;padding-top:210px}
     header{background:linear-gradient(135deg, #16a34a 0%, #2563eb 100%);color:white;padding:12px 10px 25px 10px;position:fixed;top:0;left:0;right:0;z-index:10;box-shadow:0 4px 12px rgba(22,163,74,0.3)}
-   .header-atas{display:flex;align-items:center;justify-content:space-between;max-width:1200px;margin:0 auto;position:relative;height:40px}
-   .logo-wrap{position:absolute;left:50%;transform:translateX(-50%)}
+  .header-atas{display:flex;align-items:center;justify-content:space-between;max-width:1200px;margin:0 auto;position:relative;height:40px}
+  .logo-wrap{position:absolute;left:50%;transform:translateX(-50%)}
     header img{width:150px;height:75px;margin-top:25px;border-radius:10px;background:white;object-fit:contain;border:2px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.2)}
-   .icon-keranjang-atas{position:relative;background:white;color:#16a34a;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,0.3);cursor:pointer;font-size:20px;margin-top:-10px}
-   .lencana{position:absolute;top:-3px;right:-3px;background:#ff1744;color:white;font-size:10px;font-weight:bold;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;border:2px solid white}
-   .lencana.goyang{animation:goyang 0.5s}
-   .header-bawah{display:flex;gap:8px;max-width:1200px;margin-top:33px}
-   .search{flex:2}
-   .search input{width:100%;padding:10px;border:2px solid rgba(255,255,255,0.3);border-radius:12px;color:#000;background:rgba(255,255,255,0.95);font-size:14px}
-   .search input:focus{outline:none;border-color:#22c55e}
-   .kategori-wrap{flex:2}
+  .icon-keranjang-atas{position:relative;background:white;color:#16a34a;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,0.3);cursor:pointer;font-size:20px;margin-top:-10px}
+  .lencana{position:absolute;top:-3px;right:-3px;background:#ff1744;color:white;font-size:10px;font-weight:bold;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;border:2px solid white}
+  .lencana.goyang{animation:goyang 0.5s}
+  .header-bawah{display:flex;gap:8px;max-width:1200px;margin-top:33px}
+  .search{flex:2}
+  .search input{width:100%;padding:10px;border:2px solid rgba(255,255,255,0.3);border-radius:12px;color:#000;background:rgba(255,255,255,0.95);font-size:14px}
+  .search input:focus{outline:none;border-color:#22c55e}
+  .kategori-wrap{flex:2}
     #btn-kategori{width:100%;padding:10px;border-radius:12px;border:2px solid rgba(255,255,255,0.5);background:rgba(255,255,255,0.95);color:#16a34a;font-weight:bold;font-size:14px;cursor:pointer;text-align:left}
     #btn-kategori:focus{outline:none;border-color:#22c55e}
+      #popupKategori {
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  #popupKategori .popup-content {
+    position: relative !important;
+    border-radius: 20px !important; 
+    margin: 20px !important;
+    width: calc(100% - 40px) !important;
+    max-width: 450px !important;
+    overflow: hidden !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2) !important;
+    animation: slideUpKategori 0.3s !important;
+  }
+  @keyframes slideUpKategori {
+    from { transform: translateY(100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  #popupKategori .popup-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 16px 20px !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    background: #ffffff !important;
+    border-radius: 20px 20px 0 0 !important;
+  }
+  #popupKategori #list-kategori {
+    padding-bottom: 10px !important;
+    max-height: 60vh !important;
+    overflow-y: auto !important;
+    background: white;
+    border-radius: 0 0 20px 20px;}
+      #popupKategori .close-btn{width:32px;height:32px;border-radius:50%;background:#f1f5f9;color:#64748b;display:flex;align-items:center;justify-content:center;font-size:16px;border:none;cursor:pointer;transition:0.2s}
+    #popupKategori .close-btn:hover{background:#e2e8f0;color:#0f172a}
    .menu-atas{display:flex;justify-content:center;gap:10px;padding:10px 0 0 0;max-width:1200px;margin-top:-5px;margin-bottom:-18px}
-   .btn-menu{padding:8px 15px;border:none;border-radius:20px;background:rgba(255,255,255,0.2);color:white;font-weight:bold;cursor:pointer;font-size:13px;transition:0.2s;flex-shrink:0}
-   .btn-menu.aktif{background:white;color:#16a34a;box-shadow:0 2px 5px rgba(0,0,0,0.2)}
-   .btn-reset-filter{display:none;margin:10px auto;padding:8px 15px;border:none;border-radius:20px;background:#757575;color:white;font-weight:bold;cursor:pointer}
-   .banner-slider{position:relative;overflow:hidden;margin-top:-30px;border-radius:15px;height:160px;touch-action:pan-y}
-   .banner-track{display:flex;transition:transform 0.5s ease-out;height:100%;cursor:grab}
-   .banner-item{min-width:100%;height:100%;position:relative;cursor:pointer}
-   .banner-item img{width:100%;height:100%;object-fit:cover;pointer-events:none}
-   .banner-text{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent, rgba(0,0,0,0.7));color:white;padding:12px;font-weight:bold;font-size:14px}
-   .banner-dots{display:flex;justify-content:center;gap:6px;position:absolute;bottom:10px;left:0;right:0}
-   .dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.5)}
-   .dot.aktif{background:white}
-   .produk{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:12px;max-width:1200px;margin:auto}
-   .card{background:white;border-radius:15px;padding:12px;box-shadow:0 3px 10px rgba(22,163,74,0.1);transition:0.2s;border:1px solid #dcfce7;position:relative;overflow:hidden;display:flex;flex-direction:column}
-   .card:hover{transform:translateY(-3px);box-shadow:0 5px 15px rgba(22,163,74,0.2)}
-   .card img{width:100%;height:150px;object-fit:cover;border-radius:12px;transition:0.3s ease}
-   .card:hover img{transform:scale(1.08)}
-   .badge-diskon{position:absolute;top:10px;left:10px;background:#ff1744;color:white;font-size:10px;font-weight:bold;padding:3px 7px;border-radius:6px;z-index:2;animation:kedip 1s infinite}
+  .menu-atas{display:flex;justify-content:center;gap:10px;padding:10px 0 0 0;max-width:1200px;margin-top:-5px;margin-bottom:-18px}
+  .btn-menu{padding:8px 15px;border:none;border-radius:20px;background:rgba(255,255,255,0.2);color:white;font-weight:bold;cursor:pointer;font-size:13px;transition:0.2s;flex-shrink:0}
+  .btn-menu.aktif{background:white;color:#16a34a;box-shadow:0 2px 5px rgba(0,0,0,0.2)}
+  .btn-reset-filter{display:none;margin:10px auto;padding:8px 15px;border:none;border-radius:20px;background:#757575;color:white;font-weight:bold;cursor:pointer}
+  .banner-slider{position:relative;overflow:hidden;margin-top:-30px;border-radius:15px;height:160px;touch-action:pan-y}
+  .banner-track{display:flex;transition:transform 0.5s ease-out;height:100%;cursor:grab}
+  .banner-track.dragging{cursor:grabbing;transition:none}
+  .banner-item{min-width:100%;height:100%;position:relative;cursor:pointer}
+  .banner-item img{width:100%;height:100%;object-fit:cover;pointer-events:none}
+  .banner-text{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent, rgba(0,0,0,0.7));color:white;padding:12px;font-weight:bold;font-size:14px}
+  .banner-dots{display:flex;justify-content:center;gap:6px;position:absolute;bottom:10px;left:0;right:0}
+  .dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.5)}
+  .dot.aktif{background:white}
+    .produk{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:12px;max-width:1200px;margin:auto}
+    .card{background:white;border-radius:15px;padding:12px;box-shadow:0 3px 10px rgba(25,118,210,0.1);transition:0.2s;border:1px solid #e3f2fd;position:relative;overflow:hidden;display:flex;flex-direction:column}
+    .card:hover{transform:translateY(-3px);box-shadow:0 5px 15px rgba(25,118,210,0.2)}
+    .card:active{transform:translateY(-3px)}
+    .card img{width:100%;height:150px;object-fit:cover;border-radius:12px;transition:0.3s ease}
+    .card:hover img{transform:scale(1.08)}
+    .card:active img{transform:scale(1.08)}
+    .badge-diskon{position:absolute;top:10px;left:10px;background:#ff1744;color:white;font-size:10px;font-weight:bold;padding:3px 7px;border-radius:6px;z-index:2;pointer-events:none;animation:kedip 1s infinite}
     @keyframes kedip{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
-   .badge-baru{position:absolute;top:10px;right:10px;background:linear-gradient(135deg,#22c55e 0%,#2563eb 100%);color:white;font-size:10px;font-weight:bold;padding:3px 7px;border-radius:6px;z-index:2;animation:kedip 1.5s infinite}
-   .badge-terlaris{position:absolute;top:10px;right:10px;background:linear-gradient(135deg,#ff9800 0%,#ff1744 100%);color:white;font-size:10px;font-weight:bold;padding:3px 7px;border-radius:6px;z-index:2}
-   .card h3{font-size:14px;margin:8px 0;height:38px;overflow:hidden;color:#15803d;font-weight:600}
-   .harga-coret{text-decoration:line-through;color:#999;font-size:12px}
-   .harga-diskon{color:#22c55e;font-weight:bold;font-size:16px}
-   .card p{color:#22c55e;font-weight:bold;font-size:16px}
-   .stok-info{font-size:11px;color:#666;margin-top:3px}
-   .stok-habis{color:#d32f2f;font-weight:bold}
-   .btn-tambah{background:linear-gradient(135deg, #16a34a 0%, #22c55e 100%);color:white;border:none;width:100%;padding:10px;border-radius:10px;margin-top:6px;font-weight:bold;cursor:pointer;transition:0.2s}
-   .btn-tambah:active{transform:scale(0.95)}
-   .btn-tambah:disabled{background:#ccc;cursor:not-allowed}
-   .fly-img{position:fixed;width:50px;height:50px;border-radius:10px;z-index:9999;pointer-events:none;transition:all 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55)}
-   .pagination{position:fixed;top:50%;left:0;right:0;transform:translateY(-50%);display:flex;justify-content:space-between;padding:0 10px;z-index:9;pointer-events:none}
-   .pagination button{pointer-events:auto;width:45px;height:45px;border:none;background:rgba(22,163,74,0.25);backdrop-filter:blur(15px);color:white;border-radius:50%;font-weight:bold;cursor:pointer;font-size:22px;box-shadow:0 0 20px rgba(22,163,74,0.2);border:1px solid rgba(255,255,255,0.25);transition:0.3s}
-   .pagination button:active{transform:scale(0.9);background:rgba(22,163,74,0.45)}
-   .pagination button:disabled{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.25);box-shadow:none;cursor:not-allowed}
-   .popup{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:20;align-items:flex-end;animation:fadeIn 0.3s}
-   .popup-content{background:white;width:100%;max-width:600px;margin:auto;border-radius:20px 20px 0 0;padding:18px;max-height:85vh;overflow-y:auto;animation:slideUp 0.3s}
-   .pesanan-item{background:white;border-radius:12px;padding:12px;margin:10px;border:2px solid #dcfce7}
-   .status-badge{padding:4px 10px;border-radius:15px;font-size:11px;font-weight:bold;color:white}
-   .status-baru{background:#ff9800}
-   .status-proses{background:#2563eb}
-   .status-selesai{background:#22c55e}
-   .item-kategori{padding:15px;border-bottom:1px solid #dcfce7;cursor:pointer;font-weight:bold;color:#15803d;display:flex;align-items:center;gap:10px}
-   .item-kategori.aktif{color:#22c55e;background:#f0fdf4}
+    .badge-baru{position:absolute;top:10px;right:10px;background:linear-gradient(135deg,#00c853 0%,#1976d2 100%);color:white;font-size:10px;font-weight:bold;padding:3px 7px;border-radius:6px;z-index:2;animation:kedipBaru 1.5s infinite}
+    .badge-terlaris{position:absolute;top:10px;right:10px;background:linear-gradient(135deg,#ff9800 0%,#ff1744 100%);color:white;font-size:10px;font-weight:bold;padding:3px 7px;border-radius:6px;z-index:2}
+    @keyframes kedipBaru{0%,100%{opacity:1}50%{opacity:0.6}}
+    .card h3{font-size:14px;margin:8px 0;height:38px;overflow:hidden;color:#1565c0;font-weight:600}
+    .harga-wrap{margin-top:auto}
+    .harga-coret{text-decoration:line-through;color:#999;font-size:12px}
+    .harga-diskon{color:#00c853;font-weight:bold;font-size:16px}
+    .card p{color:#00c853;font-weight:bold;font-size:16px}
+    .stok-info{font-size:11px;color:#666;margin-top:3px}
+    .stok-habis{color:#d32f2f;font-weight:bold}
+    .btn-tambah{background:linear-gradient(135deg, #1976d2 0%, #00c853 100%);color:white;border:none;width:100%;padding:10px;border-radius:10px;margin-top:6px;font-weight:bold;cursor:pointer;transition:0.2s}
+    .btn-tambah:active{transform:scale(0.95)}
+    .btn-tambah:disabled{background:#ccc;cursor:not-allowed}
+  .fly-img{position:fixed;width:50px;height:50px;border-radius:10px;z-index:9999;pointer-events:none;transition:all 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55)}
+  .pagination{position:fixed;top:50%;left:0;right:0;transform:translateY(-50%);display:flex;justify-content:space-between;padding:0 10px;z-index:9;pointer-events:none}
+  .pagination button{pointer-events:auto;width:45px;height:45px;border:none;background:rgba(22,163,74,0.25);backdrop-filter:blur(15px);color:white;border-radius:50%;font-weight:bold;cursor:pointer;font-size:22px;box-shadow:0 0 20px rgba(22,163,74,0.2);border:1px solid rgba(255,255,255,0.25);transition:0.3s}
+  .pagination button:active{transform:scale(0.9);background:rgba(22,163,74,0.45)}
+  .pagination button:disabled{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.25);box-shadow:none;cursor:not-allowed}
+  .popup{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:20;align-items:flex-end;animation:fadeIn 0.3s}
+  .popup-content{background:white;width:100%;max-width:600px;margin:auto;border-radius:20px 20px 0 0;padding:18px;max-height:85vh;overflow-y:auto;animation:slideUp 0.3s}
+  .pesanan-item{background:white;border-radius:12px;padding:12px;margin:10px;border:2px solid #dcfce7}
+  .status-badge{padding:4px 10px;border-radius:15px;font-size:11px;font-weight:bold;color:white}
+  .status-baru{background:#ff9800}
+  .status-proses{background:#2563eb}
+  .status-selesai{background:#22c55e}
+  .item-kategori{padding:15px;border-bottom:1px solid #dcfce7;cursor:pointer;font-weight:bold;color:#15803d;display:flex;align-items:center;gap:10px}
+  .item-kategori.aktif{color:#22c55e;background:#f0fdf4}
+    #popupKategori.popup-header {display: flex!important; justify-content: space-between!important; align-items: center!important; padding: 16px 20px!important; border-bottom: 1px solid #e2e8f0!important; background: #ffffff!important; border-radius: 20px 20px 0 0!important;}
+    #popupKategori.close-btn {width:32px; height:32px; border-radius:50%; background:#f1f5f9; color:#64748b; display:flex; align-items:center; justify-content:center; font-size:16px; border:none; cursor:pointer; transition:0.2s;}
+    #popupKategori.close-btn:hover {background:#e2e8f0; color:#0f172a;}
     @media(min-width: 768px){
       body{padding-top:220px}
-     .header-atas,.header-bawah,.produk,.banner-slider,.pagination,.menu-atas{max-width:1200px;margin:0 auto}
-     .produk{grid-template-columns:repeat(4, 1fr);gap:18px;padding:20px}
-     .card img{height:180px}
-     .card h3{height:40px;font-size:15px}
-     .banner-slider{height:240px;border-radius:20px;margin:15px auto}
+    .header-atas,.header-bawah,.produk,.banner-slider,.pagination,.menu-atas{max-width:1200px;margin:0 auto}
+    .produk{grid-template-columns:repeat(4, 1fr);gap:18px;padding:20px}
+    .card img{height:180px}
+    .card h3{height:40px;font-size:15px}
+    .banner-slider{height:240px;border-radius:20px;margin:15px auto}
+    .popup{align-items:stretch}
     }
   </style>
 </head>
@@ -132,39 +177,39 @@
     <div id="list-pesanan" style="margin-top:15px"></div>
   </div>
 
-  <!-- POPUP PROFIL VERSI BARU -->
+  <!-- POPUP PROFIL VERSI BARU - DROPDOWN DESA DARI SETTING -->
   <div class="popup" id="popupProfil" style="z-index:999;align-items:center">
     <div class="popup-content bg-white rounded-2xl shadow-2xl border-ijo-biru-100 animate-fade-in">
       <div class="text-center p-6 border-b border-slate-100">
         <div class="text-4xl mb-2">👋</div>
         <h3 class="text-xl font-bold bg-gradient-to-r from-ijo-biru-700 to-biru-ijo-700 bg-clip-text text-transparent">Lengkapi Data Anda</h3>
-        <p class="text-sm text-slate-500 mt-1">Isi sekali saja untuk mempermudah pesanan</p>
+        <p class="text-sm text-slate-500 mt-1">Isi sekali saja untuk mempermudah pengiriman pesanan</p>
       </div>
       <form id="form-profil" onsubmit="simpanProfil(event)" class="p-6 space-y-4">
         <div>
           <label class="block text-sm font-semibold text-slate-700 mb-1.5">1. Nama Lengkap <span class="text-red-500">*</span></label>
-          <input type="text" id="profil-nama" required placeholder="Contoh: Budi Santoso" class="w-full px-4 py-2.5 border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-ijo-biru-500">
+          <input type="text" id="profil-nama" required placeholder="Mohon di isi nama asli" class="w-full px-4 py-2.5 border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-ijo-biru-500">
         </div>
         <div>
           <label class="block text-sm font-semibold text-slate-700 mb-1.5">2. No WA Aktif <span class="text-red-500">*</span></label>
-          <input type="tel" id="profil-wa" required placeholder="08xxxxxxxxxx" class="w-full px-4 py-2.5 border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-ijo-biru-500">
+          <input type="tel" id="profil-wa" required placeholder="08xxxxxxxxxx" class="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-ijo-biru-500">
         </div>
         <div>
           <label class="block text-sm font-semibold text-slate-700 mb-1.5">3. Alamat Lengkap <span class="text-red-500">*</span></label>
-          <label class="text-xs text-slate-600">Desa</label>
-          <select id="profil-desa" required onchange="isiOtomatisKecamatanKabupaten()" class="w-full px-4 py-2.5 border-slate-300 rounded-xl mb-2 focus:ring-ijo-biru-500">
+          <label class="text-xs text-slate-600">Desa Wilayah Terlayani <span class="text-red-500">*</span></label>
+          <select id="profil-desa" required class="w-full px-4 py-2.5 border-slate-300 rounded-xl mb-2 focus:ring-ijo-biru-500">
             <option value="">-- Pilih Desa --</option>
           </select>
           <label class="text-xs text-slate-600">Jalan / Gang / RT RW</label>
-          <input type="text" id="profil-jalan" required placeholder="Jl. Mawar No.10 RT 01 RW 02" class="w-full px-4 py-2.5 border-slate-300 rounded-xl mb-2 focus:ring-ijo-biru-500">
+          <input type="text" id="profil-jalan" required placeholder="Jl. Mawar No.10 RT 01 RW 02" class="w-full px-4 py-2.5 border border-slate-300 rounded-xl mb-2 focus:ring-ijo-biru-500">
           <div class="grid grid-cols-2 gap-3">
             <div>
               <label class="text-xs text-slate-600">Kecamatan</label>
-              <input type="text" id="profil-kecamatan" required readonly class="w-full px-4 py-2.5 border-slate-300 rounded-xl bg-slate-100 focus:ring-ijo-biru-500">
+              <input type="text" id="profil-kecamatan" required placeholder="Contoh: Gresik" class="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:ring-ijo-biru-500">
             </div>
             <div>
               <label class="text-xs text-slate-600">Kabupaten</label>
-              <input type="text" id="profil-kabupaten" required readonly class="w-full px-4 py-2.5 border-slate-300 rounded-xl bg-slate-100 focus:ring-ijo-biru-500">
+              <input type="text" id="profil-kabupaten" required placeholder="Contoh: Gresik" class="w-full px-4 py-2.5 border-slate-300 rounded-xl focus:ring-ijo-biru-500">
             </div>
           </div>
         </div>
@@ -205,21 +250,34 @@
     let bannerIndex = 0; let bannerInterval; let startX = 0; let isDragging = false; let dragThreshold = false;
     let settingPromo = {aktif: false, minimal: 100000, tgl_akhir: null, biaya_layanan: 2000, ongkir_default: 2000, gambar_urls: []};
     let dataProfil = null;
-
-    const DATA_WILAYAH = [
-      {desa: "Gresik", kecamatan: "Gresik", kabupaten: "Gresik"},
-      {desa: "Kebomas", kecamatan: "Gresik", kabupaten: "Gresik"},
-      {desa: "Sidomoro", kecamatan: "Gresik", kabupaten: "Gresik"},
-      {desa: "Tandes", kecamatan: "Dukun", kabupaten: "Gresik"}
-    ];
+    let daftarDesa = []; // UNTUK DROPDOWN DESA DARI ADMIN
 
     document.addEventListener('DOMContentLoaded', async () => {
       keranjang = JSON.parse(localStorage.getItem('keranjang_sarahmart')) || [];
       await loadSettingPromo();
+      await loadDesaTerlayani(); // LOAD DESA DARI SETTING
       await cekProfilUser();
       loadProduk();
       updateKeranjangBar();
     });
+
+    async function loadDesaTerlayani(){
+      const {data} = await db.from('setting').select('value').eq('key','desa_terlayani').single();
+      if(data && data.value){
+        daftarDesa = typeof data.value === 'string'? JSON.parse(data.value) : data.value;
+      } else {
+        daftarDesa = ["Gresik","Kebomas","Sidomoro","Dukun","Tandes"]; // default 0-5km
+      }
+      isiDropdownDesa();
+    }
+
+    function isiDropdownDesa(){
+      const select = document.getElementById('profil-desa');
+      select.innerHTML = `<option value="">-- Pilih Desa --</option>`;
+      daftarDesa.forEach(desa => {
+        select.innerHTML += `<option value="${desa}">${desa}</option>`;
+      });
+    }
 
     async function cekProfilUser(){
       const { data: { user } } = await db.auth.getUser();
@@ -227,28 +285,13 @@
       const {data} = await db.from('profiles').select('*').eq('id', user.id).single();
       dataProfil = data;
       if(!data ||!data.nama_lengkap ||!data.no_wa){
-        isiDropdownDesa();
         document.getElementById('popupProfil').style.display = 'flex';
       }
     }
 
-    function isiDropdownDesa(){
-      const select = document.getElementById('profil-desa');
-      DATA_WILAYAH.forEach(w => {
-        select.innerHTML += `<option value="${w.desa}" data-kec="${w.kecamatan}" data-kab="${w.kabupaten}">${w.desa}</option>`;
-      });
-    }
-
-    function isiOtomatisKecamatanKabupaten(){
-      const select = document.getElementById('profil-desa');
-      const option = select.options[select.selectedIndex];
-      document.getElementById('profil-kecamatan').value = option.getAttribute('data-kec') || '';
-      document.getElementById('profil-kabupaten').value = option.getAttribute('data-kab') || '';
-    }
-
     async function simpanProfil(e){
       e.preventDefault();
-      const { data: { user } }= await db.auth.getUser();
+      const { data: { user } } = await db.auth.getUser();
       const profilData = {
         id: user.id,
         nama_lengkap: document.getElementById('profil-nama').value,
@@ -266,6 +309,7 @@
         showNotifAyu('Data berhasil disimpan!', 'sukses');
       }
     }
+
     async function loadSettingPromo(){
       const {data} = await db.from('setting').select('*').eq('key','promo_undian').single();
       if(data && data.value){
@@ -397,7 +441,7 @@
       container.innerHTML='';
       data.forEach(p=>{
         let statusClass = p.status=='Baru'?'status-baru':p.status=='Proses'?'status-proses':'status-selesai';
-        container.innerHTML += `<div class="pesanan-item"><div style="display:flex;justify-content:space-between"><b>ID: ${p.id_pesanan}</b><span class="status-badge ${statusClass}">${p.status}</span></div><small>${new Date(p.created_at).toLocaleString('id-ID')}</small><p style="margin:8px 0">Total: <b style="color:#00c853">Rp ${Number(p.total_harga).toLocaleString('id-ID')}</b></p></div>`;
+        container.innerHTML += `<div class="pesanan-item"><div style="display:flex;justify-content:space-between"><b>ID: ${p.id_pesanan}</b><span class="status-badge ${statusClass}">${p.status}</span></div><small>${new Date(p.created_at).toLocaleString('id-ID')}</small><p style="margin:8px 0">Total: <b style="color:#22c55e">Rp ${Number(p.total_harga).toLocaleString('id-ID')}</b></p></div>`;
       });
     }
 
@@ -488,14 +532,14 @@
       }
       const img = tombol.closest('.card').querySelector('img');
       animasiTerbang(img);
-      
+
       if(itemKeranjang){itemKeranjang.jumlah++}
       else{keranjang.push({...itemProduk, harga: hargaFinal, jumlah:1})}
-      
+
       localStorage.setItem('keranjang_sarahmart', JSON.stringify(keranjang)); // SIMPEN NENG LOCALSTORAGE
       tombol.innerHTML = '✓ Ditambah';
-      tombol.style.background = 'linear-gradient(135deg, #00c853 0%, #2e7d32 100%)';
-      setTimeout(()=>{tombol.innerHTML = '+ Tambah'; tombol.style.background = 'linear-gradient(135deg, #1976d2 0%, #00c853 100%)';}, 500);
+      tombol.style.background = 'linear-gradient(135deg, #22c55e 0%, #15803d 100%)';
+      setTimeout(()=>{tombol.innerHTML = '+ Tambah'; tombol.style.background = 'linear-gradient(135deg, #16a34a 0%, #22c55e 100%)';}, 500);
       updateKeranjangBar();
     }
 
@@ -542,7 +586,7 @@
       } else {
         icon.innerText = '✅';
         judul.innerText = 'Sukses';
-        judul.style.color = '#00c853';
+        judul.style.color = '#22c55e';
       }
       popup.style.display = 'flex';
       setTimeout(()=>{tutupNotif()}, 2500);
