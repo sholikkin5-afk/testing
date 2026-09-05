@@ -554,57 +554,7 @@
     }
 
     function tutupNotif(){document.getElementById('popupNotif').style.display = 'none';}
-
-    // SW - FITUR LAMA AMAN
-// DAFTARKAN SERVICE WORKER
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').then(reg => {
-          console.log('SW Registered: ', reg);
-          reg.addEventListener('updatefound', () => {
-            const newWorker = reg.installing;
-            newWorker.addEventListener('statechange', () => {
-              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                if(confirm('Ada update baru SARAHmart! Reload sekarang?')){
-                  window.location.reload();
-                }
-              }
-            });
-          });
-        }).catch(err => console.log('SW Error: ', err));
-      });
-    }
-
-    // LOGIKA POPUP INSTALL
-    let deferredPrompt;
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      
-      // Cek: nek wes isi profil + durung diinstall, baru munculno popup
-      setTimeout(() => {
-        if(dataProfil && dataProfil.nama_lengkap){
-          document.getElementById('popupInstall').style.display = 'flex';
-        }
-      }, 3000); // muncul 3 detik setelah halaman load
-    });
-
-    async function installApp(){
-      if(deferredPrompt){
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        if(outcome === 'accepted'){
-          showNotifAyu('Aplikasi berhasil diinstall!', 'sukses');
-        }
-        deferredPrompt = null;
-      }
-      tutupInstall();
-    }
-
-    function tutupInstall(){
-      document.getElementById('popupInstall').style.display = 'none';
-      localStorage.setItem('sudah_tolak_install', 'true'); // Ben gak muncul meneh
-    }
+    
   </script>
 </body>
 </html>
