@@ -8,28 +8,37 @@
   <style>
     *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
     body{background:#f0f7ff;padding:20px}
-    .container{max-width:600px;margin:auto;background:white;border-radius:20px;padding:20px;box-shadow:0 5px 20px rgba(25,118,210,0.1)}
-    .header-keranjang{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
-    .btn-back{background:#1976d2;color:white;border:none;padding:8px 15px;border-radius:10px;cursor:pointer}
-    .item-cart{display:flex;gap:12px;margin-bottom:12px;padding:12px;background:#f8fafc;border-radius:14px;border:1px solid #e2e8f0}
-    .item-cart img{width:70px;height:70px;object-fit:cover;border-radius:10px}
-    .qty-btn{display:flex;align-items:center;gap:4px;margin-top:6px}
-    .qty-btn button{width:28px;height:28px;border:1px solid #cbd5e1;background:#fff;border-radius:6px;font-weight:bold;cursor:pointer}
-    .qty-input{width:40px;height:28px;text-align:center;border:1px solid #cbd5e1;border-radius:6px}
-    .total-bar{background:#f0f7ff;padding:16px;border-radius:14px;margin:16px 0}
-    .total-detail{display:flex;justify-content:space-between;margin:5px 0}
-    .form-pelanggan input, .form-pelanggan textarea{width:100%;padding:10px 12px;margin:6px 0;border:1px solid #cbd5e1;border-radius:8px}
-    .btn-wa{width:100%;background:linear-gradient(135deg, #25D366 0%, #128C7E 100%);color:white;border:none;padding:14px;border-radius:12px;font-size:15px;font-weight:bold;cursor:pointer}
-    .btn-hapus{color:#ef4444;border:none;background:none;cursor:pointer;margin-top:6px}
+   .container{max-width:600px;margin:auto;background:white;border-radius:20px;padding:20px;box-shadow:0 5px 20px rgba(25,118,210,0.1)}
+   .header-keranjang{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+   .btn-back{background:#1976d2;color:white;border:none;padding:8px 15px;border-radius:10px;cursor:pointer}
+   .item-cart{display:flex;gap:12px;margin-bottom:12px;padding:12px;background:#f8fafc;border-radius:14px;border:1px solid #e2e8f0}
+   .item-cart img{width:70px;height:70px;object-fit:cover;border-radius:10px}
+   .qty-btn{display:flex;align-items:center;gap:4px;margin-top:6px}
+   .qty-btn button{width:28px;height:28px;border:1px solid #cbd5e1;background:#fff;border-radius:6px;font-weight:bold;cursor:pointer}
+   .qty-input{width:40px;height:28px;text-align:center;border:1px solid #cbd5e1;border-radius:6px}
+    .total-bar{background:#ffffff;border:1px solid #e2e8f0;padding:16px;border-radius:14px;margin-top:16px;margin-bottom:16px;box-shadow:0 2px 6px rgba(0, 0, 0, 0.03)}
+    .total-bar{display:flex;flex-direction:column;gap:8px}
+    .total-detail{font-size:13px;color:#64748b;display:flex;justify-content:space-between;align-items:center}
+    .total-detail span:last-child{font-weight:600;color:#1e293b}
+    .total-detail:last-child{margin-top:4px;padding-top:12px;border-top:1px solid #e2e8f0;font-size:15px;font-weight:700;color:#1e293b;background:#f0f7ff;margin:8px -16px -16px -16px;padding:12px 16px;border-radius:0 0 14px 14px}
+    .total-detail:last-child span:last-child{color:#1976d2;font-size:16px}
+   .form-pelanggan input,.form-pelanggan textarea{width:100%;padding:10px 12px;margin:6px 0;border:1px solid #cbd5e1;border-radius:8px}
+   .btn-wa{width:100%;background:linear-gradient(135deg, #25D366 0%, #128C7E 100%);color:white;border:none;padding:14px;border-radius:12px;font-size:15px;font-weight:bold;cursor:pointer}
+   .btn-hapus{color:#ef4444;border:none;background:none;cursor:pointer;margin-top:6px}
+
+    /* TAMBAH CSS KUPON */
+    #notif-kupon{background:linear-gradient(135deg, #FFD700 0%, #FFA500 100%);color:#000;padding:14px 16px;border-radius:14px;margin-bottom:16px;text-align:center;font-weight:600;font-size:13.5px;box-shadow:0 4px 12px rgba(255, 215, 0, 0.3);display:none}
+    #notif-kupon small{display:block;font-weight:normal;font-size:11.5px;margin-top:4px}
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header-keranjang">
       <h2>🛒 Keranjang Belanja</h2>
-      <button class="btn-back" onclick="window.location.href='sarahmart.html'">← Kembali Belanja</button>
+      <button class="btn-back" onclick="window.location.href='sarahmart.html'">x</button>
     </div>
 
+    <div id="notif-kupon"></div> <!-- TAMBAH NOTIF KUPON -->
     <div id="isi-keranjang">Loading...</div>
     <div id="rincian-total"></div>
 
@@ -38,56 +47,36 @@
       <input type="text" id="nama_pelanggan" placeholder="Nama Lengkap" readonly>
       <input type="text" id="no_hp" placeholder="No HP 08xxxx" readonly>
       <textarea id="alamat" placeholder="Alamat Lengkap" rows="3" readonly></textarea>
-      <p style="font-size:12px;color:#666">*Data diambil dari Profil. Ganti neng sarahmart.html > Profil</p>
     </div>
 
     <button class="btn-wa" onclick="kirimPesanan()">💬 Kirim Pesanan via WhatsApp</button>
   </div>
-<!-- NOTIFIKASI UPDATE PWA -->
-<div id="update-notif" class="hidden fixed bottom-4 left-1/2 -translate-x-1/2 bg-ijo-biru-700 text-white px-5 py-3 rounded-xl shadow-2xl z-[9999] flex items-center gap-3">
-  <span>Ada versi baru tersedia!</span>
-  <button id="btn-reload" class="bg-white text-ijo-biru-700 font-bold px-3 py-1 rounded-lg">Update</button>
-</div>
 
 <script>
-let newWorker;
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/service-worker.js').then(reg => {
-        reg.addEventListener('updatefound', () => {
-          newWorker = reg.installing;
-          newWorker.addEventListener('statechange', () => {
-            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-              document.getElementById('update-notif').classList.remove('hidden');
-            }
-          });
-        });
-    });
-
-    document.getElementById('btn-reload').addEventListener('click', () => {
-        if (newWorker) newWorker.postMessage({ type: 'SKIP_WAITING' });
-    });
-
-    navigator.serviceWorker.addEventListener('controllerchange', () => {
-        window.location.reload();
-    });
-  });
-}
-</script>
-  <script>
     const SUPABASE_URL = 'https://fbxfoorzeojsqnzcmvic.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_Xg3DLbSsRFTsU5ZjxIylkA_JP6pUpSK';
     const ADMIN_WA = '6281328282446';
     const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     let keranjang = []; let produk = []; let dataProfil = null;
     let BIAYA_LAYAN = 2000; let ONGKIR_DEFAULT = 2000;
+    let settingPromo = {aktif: false, minimal: 100000, tgl_akhir: null}; // TAMBAH
 
     document.addEventListener('DOMContentLoaded', async () => {
+      await loadSettingPromo(); // TAMBAH LOAD SETTING DISELEK
       keranjang = JSON.parse(localStorage.getItem('keranjang_sarahmart')) || [];
       await loadProduk();
       await loadProfil();
       tampilKeranjang();
     });
+
+    async function loadSettingPromo(){ // TAMBAH FUNGSI
+      const {data} = await db.from('setting').select('*').eq('key','promo_undian').single();
+      if(data && data.value){
+        settingPromo = typeof data.value === 'string'? JSON.parse(data.value) : data.value;
+        BIAYA_LAYAN = settingPromo.biaya_layanan || 2000;
+        ONGKIR_DEFAULT = settingPromo.ongkir_default || 2000;
+      }
+    }
 
     async function loadProduk(){
       const {data} = await db.from('prodak').select('*');
@@ -106,12 +95,33 @@ if ('serviceWorker' in navigator) {
       }
     }
 
+    function cekKupon(total){ // TAMBAH FUNGSI KUPON UNDIAN
+      const notifDiv = document.getElementById('notif-kupon');
+      const today = new Date().toISOString().split('T')[0];
+      if(!settingPromo.aktif || (settingPromo.tgl_akhir && today > settingPromo.tgl_akhir)){
+        notifDiv.style.display = 'none';
+        return 0;
+      }
+      const minimal = settingPromo.minimal;
+      const jumlahKupon = Math.floor(total / minimal);
+      if(jumlahKupon > 0){
+        notifDiv.innerHTML = `🎉 SELAMAT! ANDA DAPAT ${jumlahKupon} KUPON UNDIAN 🎉<small>Belanja Rp ${total.toLocaleString('id-ID')} = ${jumlahKupon}x kelipatan Rp ${minimal.toLocaleString('id-ID')}. ${settingPromo.tgl_akhir? `Berlaku s/d ${new Date(settingPromo.tgl_akhir).toLocaleDateString('id-ID', {day: 'numeric', month: 'long'})}` : 'Tanpa batas waktu'}</small>`;
+        notifDiv.style.display = 'block';
+      } else {
+        const kurang = minimal - total;
+        notifDiv.innerHTML = `🎁 Tambah belanja <b>Rp ${kurang.toLocaleString('id-ID')}</b> lagi untuk dapat 1 Kupon Undian!`;
+        notifDiv.style.display = 'block';
+      }
+      return jumlahKupon;
+    }
+
     function tampilKeranjang(){
       const container = document.getElementById('isi-keranjang');
       const rincianEl = document.getElementById('rincian-total');
       if(keranjang.length === 0){
         container.innerHTML = "<p style='text-align:center;color:#666'>Keranjang masih kosong</p>";
         rincianEl.innerHTML = "";
+        document.getElementById('notif-kupon').style.display = 'none';
         return;
       }
       container.innerHTML = "";
@@ -136,6 +146,8 @@ if ('serviceWorker' in navigator) {
       let ongkir = ONGKIR_DEFAULT;
       let biayaLay = BIAYA_LAYAN;
       let totalAkhir = totalBelanja + ongkir + biayaLay;
+      let jumlahKupon = cekKupon(totalBelanja); // PANGGIL KUPON
+
       rincianEl.innerHTML = `<div class="total-bar">
         <div class="total-detail"><span>Subtotal</span><span>Rp ${totalBelanja.toLocaleString('id-ID')}</span></div>
         <div class="total-detail"><span>Ongkir</span><span>Rp ${ongkir.toLocaleString('id-ID')}</span></div>
@@ -159,26 +171,36 @@ if ('serviceWorker' in navigator) {
     async function kirimPesanan(){
       if(keranjang.length===0){alert("Keranjang kosong!"); return;}
       if(!dataProfil){alert("Lengkapi profil dulu!"); return;}
-      
+
       let totalBelanja = keranjang.reduce((a,b)=>a+b.harga*b.jumlah,0);
-      let totalAkhir = totalBelanja + ONGKIR_DEFAULT + BIAYA_LAYAN;
+      let ongkir = ONGKIR_DEFAULT;
+      let biayaLay = BIAYA_LAYAN;
+      let totalAkhir = totalBelanja + ongkir + biayaLay;
+      const today = new Date().toISOString().split('T')[0];
+      let jumlahKupon = 0;
+      if(settingPromo.aktif && (!settingPromo.tgl_akhir || today <= settingPromo.tgl_akhir)){
+        jumlahKupon = Math.floor(totalBelanja / settingPromo.minimal);
+      }
       const id_pesanan = 'SRH' + Date.now();
 
       const {error} = await db.from('pesenan').insert([{
         id_pesanan: id_pesanan, data_keranjang: keranjang, nama_pelanggan: dataProfil.nama_lengkap,
-        no_hp: dataProfil.no_wa, alamat: dataProfil.jalan, total_harga: totalAkhir, status: 'Baru'
+        no_hp: dataProfil.no_wa, alamat: `Jalan: ${dataProfil.jalan} Desa: ${dataProfil.desa} Kec: ${dataProfil.kecamatan} Kab: ${dataProfil.kabupaten}`,
+        total_harga: totalAkhir, ongkir: ongkir, biaya_layanan: biayaLay, jumlah_kupon: jumlahKupon, status: 'Baru'
       }]);
       if(error){alert('Gagal: '+error.message); return;}
 
       let pesanAdmin = `🔔 PESAN BARU! 🔔%0AID: ${id_pesanan}%0A`;
       keranjang.forEach(k=>{pesanAdmin += `- ${k.nama} x${k.jumlah}%0A`;});
-      pesanAdmin += `%0ATOTAL: Rp ${totalAkhir.toLocaleString('id-ID')}%0A%0ADari: ${dataProfil.nama_lengkap}`;
+      pesanAdmin += `%0ASubtotal: Rp ${totalBelanja.toLocaleString('id-ID')}%0AOngkir: Rp ${ongkir.toLocaleString('id-ID')}%0ABiaya Layanan: Rp ${biayaLay.toLocaleString('id-ID')}`;
+      if(jumlahKupon > 0) pesanAdmin += `%0A🎟️ DAPAT KUPON UNDIAN: ${jumlahKupon}`;
+      pesanAdmin += `%0A%0ATOTAL: Rp ${totalAkhir.toLocaleString('id-ID')}%0A%0ADari: ${dataProfil.nama_lengkap} - ${dataProfil.no_wa}%0AAlamat: Jalan ${dataProfil.jalan}, ${dataProfil.desa}, ${dataProfil.kecamatan}, ${dataProfil.kabupaten}`;
       window.open(`https://wa.me/${ADMIN_WA}?text=${pesanAdmin}`, '_blank');
-      
-      localStorage.removeItem('keranjang_sarahmart'); // KOSONGNO KERANJANG
+
+      localStorage.removeItem('keranjang_sarahmart');
       alert('Pesanan terkirim!');
       window.location.href = 'sarahmart.html';
     }
-  </script>
+</script>
 </body>
 </html>
