@@ -177,7 +177,7 @@
     </div>
     <div class="menu-atas">
       <button class="btn-menu aktif" onclick="gantiMenu('produk', this)">🛍️ Produk</button>
-      <button class="btn-menu" onclick="gantiMenu('pesanan', this)">📦 Pesanan Saya</button>
+      <button class="btn-menu" onclick="window.location.href='pesanan.html'">📦 Pesanan Saya</button>
     </div>
   </header>
 
@@ -187,13 +187,6 @@
     <div class="produk" id="daftar-produk">Loading produk...</div>
     <div class="pagination" id="pagination"><button id="btn-prev" onclick="gantiHalaman(-1)"><</button><button id="btn-next" onclick="gantiHalaman(1)">></button></div>
   </div>
-
-  <div id="halaman-pesanan" style="display:none;max-width:800px;margin:auto;padding:10px">
-    <h3 style="text-align:center;color:#16a34a;margin:15px 0">📦 Riwayat Pesanan</h3>
-    <button onclick="loadPesanan()" class="w-full bg-gradient-to-r from-ijo-biru-600 to-biru-ijo-600 text-white py-3 rounded-xl font-bold">Muat Pesanan Saya</button>
-    <div id="list-pesanan" style="margin-top:15px"></div>
-  </div>
-
   <!-- POPUP PROFIL VERSI BARU - DROPDOWN DESA DARI SETTING -->
   <div class="popup" id="popupProfil" style="z-index:999;align-items:center">
     <div class="popup-content bg-white rounded-2xl shadow-2xl border-ijo-biru-100 animate-fade-in">
@@ -453,20 +446,6 @@
     function filterBanner(link){ if(dragThreshold) return; if(link.startsWith('diskon')){ const persen = link.replace('diskon',''); filterProdukByDiskon(persen); document.getElementById('daftar-produk').scrollIntoView({behavior: 'smooth'}); } }
     function filterProdukByDiskon(persen){ produkFilter = produk.filter(p => p.diskon == persen); kategoriAktif = 'Semua'; document.getElementById('btn-kategori').innerHTML = `📦 Semua Kategori <span style="float:right">▼</span>`; halamanAktif = 1; tampilProduk(); document.getElementById('btn-reset-filter').style.display = 'block'; }
     function resetFilter(){ produkFilter = allProduk; kategoriAktif = 'Semua'; document.getElementById('btn-kategori').innerHTML = `📦 Semua Kategori <span style="float:right">▼</span>`; halamanAktif = 1; tampilProduk(); document.getElementById('btn-reset-filter').style.display = 'none'; }
-    function gantiMenu(menu, el){ document.querySelectorAll('.btn-menu').forEach(b=>b.classList.remove('aktif')); el.classList.add('aktif'); document.getElementById('halaman-produk').style.display = menu=='produk'?'block':'none'; document.getElementById('halaman-pesanan').style.display = menu=='pesanan'?'block':'none'; }
-
-    async function loadPesanan(){
-      if(!dataProfil) return showNotifAyu('Lengkapi profil dulu','gagal');
-      const hp = dataProfil.no_wa;
-      const {data} = await db.from('pesenan').select('*').eq('no_hp', hp).order('created_at', {ascending:false});
-      const container = document.getElementById('list-pesanan');
-      if(!data || data.length==0){container.innerHTML='<p style="text-align:center">Belum ada pesanan</p>';return;}
-      container.innerHTML='';
-      data.forEach(p=>{
-        let statusClass = p.status=='Baru'?'status-baru':p.status=='Proses'?'status-proses':'status-selesai';
-        container.innerHTML += `<div class="pesanan-item"><div style="display:flex;justify-content:space-between"><b>ID: ${p.id_pesanan}</b><span class="status-badge ${statusClass}">${p.status}</span></div><small>${new Date(p.created_at).toLocaleString('id-ID')}</small><p style="margin:8px 0">Total: <b style="color:#22c55e">Rp ${Number(p.total_harga).toLocaleString('id-ID')}</b></p></div>`;
-      });
-    }
 
     async function loadProduk(){
       const container = document.getElementById('daftar-produk');

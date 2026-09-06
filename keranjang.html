@@ -51,8 +51,25 @@
 
     <button class="btn-wa" onclick="kirimPesanan()">💬 Kirim Pesanan via WhatsApp</button>
   </div>
+    <!-- NOTIFIKASI UPDATE PWA -->
+    <div id="update-notif" class="hidden fixed bottom-4 left-1/2 -translate-x-1/2 bg-[#1976d2] text-white px-5 py-3 rounded-xl shadow-2xl z-[9999] flex items-center gap-3" style="position:fixed">
+      <span>Ada versi baru tersedia!</span>
+      <button id="btn-reload" class="bg-white text-[#1976d2] font-bold px-3 py-1 rounded-lg">Update</button>
+      <button id="btn-tutup" class="text-white font-bold px-2">X</button>
+    </div>
+
+<script src="/pwa.js"></script>
 
 <script>
+    // TAMBAH IKI BEN TOMBOL X ISO NUTUP
+    document.addEventListener('DOMContentLoaded', () => {
+      const btnTutup = document.getElementById('btn-tutup');
+      if(btnTutup){
+        btnTutup.addEventListener('click', () => {
+            document.getElementById('update-notif').classList.add('hidden');
+        });
+      }
+    });
     const SUPABASE_URL = 'https://fbxfoorzeojsqnzcmvic.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_Xg3DLbSsRFTsU5ZjxIylkA_JP6pUpSK';
     const ADMIN_WA = '6281328282446';
