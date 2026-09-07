@@ -50,13 +50,59 @@
 .kategori-wrap{flex:2}
     #btn-kategori{width:100%;padding:10px;border-radius:12px;border:2px solid rgba(255,255,255,0.5);background:rgba(255,255,255,0.95);color:#0d9488;font-weight:bold;font-size:14px;cursor:pointer;text-align:left}
     #btn-kategori:focus{outline:none;border-color:#14b8a6}
-    #popupKategori { align-items: center!important; justify-content: center!important; }
-    #popupKategori.popup-content { position: relative!important; border-radius: 20px!important; margin: 20px!important; width: calc(100% - 40px)!important; max-width: 450px!important; overflow: hidden!important; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2)!important; animation: slideUpKategori 0.3s!important; background: #ffffff!important; }
-    @keyframes slideUpKategori { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-    #popupKategori.popup-header { display: flex!important; justify-content: space-between!important; align-items: center!important; padding: 16px 20px!important; border-bottom: 1px solid #e2e8f0!important; background: #ffffff!important; border-radius: 20px 20px 0 0!important; }
-    #popupKategori #list-kategori { padding-bottom: 10px!important; max-height: 60vh!important; overflow-y: auto!important; background: white; border-radius: 0 0 20px 20px; }
-    #popupKategori.close-btn { width:32px; height:32px; border-radius:50%; background:#f1f5f9; color:#64748b; display:flex; align-items:center; justify-content:center; font-size:16px; border:none; cursor:pointer; transition:0.2s; }
-    #popupKategori.close-btn:hover { background:#e2e8f0; color:#0f172a; }
+    #popupKategori {
+      align-items: center !important;
+      justify-content: center !important;
+    }
+    #popupKategori .popup-content {
+      position: relative !important;
+      border-radius: 20px !important; 
+      margin: 20px !important;
+      width: calc(100% - 40px) !important;
+      max-width: 450px !important;
+      overflow: hidden !important;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2) !important;
+      animation: slideUpKategori 0.3s !important;
+      background: #ffffff !important;
+    }
+    @keyframes slideUpKategori {
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    #popupKategori .popup-header {
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      padding: 16px 20px !important;
+      border-bottom: 1px solid #e2e8f0 !important;
+      background: #ffffff !important;
+      border-radius: 20px 20px 0 0 !important;
+    }
+    #popupKategori #list-kategori {
+      padding-bottom: 10px !important;
+      max-height: 60vh !important;
+      overflow-y: auto !important;
+      background: white;
+      border-radius: 0 0 20px 20px;
+    }
+    #popupKategori .close-btn {
+      width:32px;
+      height:32px;
+      border-radius:50%;
+      background:#f1f5f9;
+      color:#64748b;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:16px;
+      border:none;
+      cursor:pointer;
+      transition:0.2s;
+    }
+    #popupKategori .close-btn:hover {
+      background:#e2e8f0;
+      color:#0f172a;
+    }
 .menu-atas{display:flex;justify-content:center;gap:10px;padding:10px 0 0 0;max-width:1200px;margin-top:-5px;margin-bottom:-18px}
 .btn-menu{padding:8px 15px;border:none;border-radius:20px;background:rgba(255,255,255,0.2);color:white;font-weight:bold;cursor:pointer;font-size:13px;transition:0.2s;flex-shrink:0}
 .btn-menu.aktif{background:white;color:#0d9488;box-shadow:0 2px 5px rgba(0,0,0,0.2)}
