@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#16a34a">
+  <meta name="theme-color" content="#0ea5e9">
   <link rel="manifest" href="manifest.json">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -13,18 +13,20 @@
   <!-- TAILWIND + SUPABASE -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script> <!-- TAMBAH IKI -->
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            'ijo-biru': { 50:'#f0fdf4', 100:'#dcfce7', 500:'#22c55e', 600:'#16a34a', 700:'#15803d', 800:'#166534' },
-            'biru-ijo': { 500:'#3b82f6', 600:'#2563eb', 700:'#1d4ed8' }
+            'ijo-tosca': { 50:'#f0fdfa', 100:'#ccfbf1', 500:'#14b8a6', 600:'#0d9488', 700:'#0f766e', 800:'#115e59' },
+            'ungu-mewah': { 500:'#8b5cf6', 600:'#7c3aed', 700:'#6d28d9' }
           },
-          animation: { 'fade-in': 'fadeIn 0.3s ease-out', 'goyang': 'goyang 0.5s' },
+          animation: { 'fade-in': 'fadeIn 0.3s ease-out', 'goyang': 'goyang 0.5s', 'shake': 'shake 0.5s' },
           keyframes: {
             fadeIn: { '0%': { opacity: '0', transform: 'scale(0.95)' }, '100%': { opacity: '1', transform: 'scale(1)' } },
-            goyang: { '0%,100%': {transform:'scale(1)'}, '50%': {transform:'scale(1.15)'} }
+            goyang: { '0%,100%': {transform:'scale(1)'}, '50%': {transform:'scale(1.15)'} },
+            shake: { '0%,100%': {transform:'translateX(0)'}, '25%': {transform:'translateX(-5px)'}, '75%': {transform:'translateX(5px)'} }
           }
         }
       }
@@ -32,16 +34,16 @@
   </script>
 
   <style>
-    /* SISA CSS LAWAS SING GK ISO DIGANTI TAILWIND TAK PERTAHANKE */
-    body{background:#f0fdf4;padding-bottom:20px;padding-top:210px}
-    header{background:linear-gradient(135deg, #16a34a 0%, #2563eb 100%);color:white;padding:12px 10px 25px 10px;position:fixed;top:0;left:0;right:0;z-index:10;box-shadow:0 4px 12px rgba(22,163,74,0.3)}
- .header-atas{display:flex;align-items:center;justify-content:space-between;max-width:1200px;margin:0 auto;position:relative;height:40px}
- .logo-wrap{position:absolute;left:50%;transform:translateX(-50%)}
+    /* CSS LAWAS + TEMA BARU IJO TOSCA + UNGU */
+    body{background:linear-gradient(135deg, #f0fdfa 0%, #f5f3ff 100%);padding-bottom:20px;padding-top:210px}
+    header{background:linear-gradient(135deg, #0d9488 0%, #7c3aed 100%);color:white;padding:12px 10px 25px 10px;position:fixed;top:0;left:0;right:0;z-index:10;box-shadow:0 4px 20px rgba(14,165,233,0.3)}
+.header-atas{display:flex;align-items:center;justify-content:space-between;max-width:1200px;margin:0 auto;position:relative;height:40px}
+.logo-wrap{position:absolute;left:50%;transform:translateX(-50%)}
     header img{width:150px;height:75px;margin-top:25px;border-radius:10px;background:white;object-fit:contain;border:2px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.2)}
- .icon-keranjang-atas{position:relative;background:white;color:#16a34a;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,0.3);cursor:pointer;font-size:20px;margin-top:-10px}
- .lencana{position:absolute;top:-3px;right:-3px;background:#ff1744;color:white;font-size:10px;font-weight:bold;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;border:2px solid white}
- .lencana.goyang{animation:goyang 0.5s}
- .header-bawah{display:flex;gap:8px;max-width:1200px;margin-top:33px}
+.icon-keranjang-atas{position:relative;background:white;color:#0d9488;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,0.3);cursor:pointer;font-size:20px;margin-top:-10px}
+.lencana{position:absolute;top:-3px;right:-3px;background:#ec4899;color:white;font-size:10px;font-weight:bold;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;border:2px solid white}
+.lencana.goyang{animation:goyang 0.5s}
+.header-bawah{display:flex;gap:8px;max-width:1200px;margin-top:33px}
  .search{flex:2}
  .search input{width:100%;padding:10px;border:2px solid rgba(255,255,255,0.3);border-radius:12px;color:#000;background:rgba(255,255,255,0.95);font-size:14px}
  .search input:focus{outline:none;border-color:#22c55e}
@@ -252,9 +254,7 @@
 
   <script src="/pwa.js"></script>
   <script>
-    const SUPABASE_URL = 'https://fbxfoorzeojsqnzcmvic.supabase.co';
-    const SUPABASE_ANON_KEY = 'sb_publishable_Xg3DLbSsRFTsU5ZjxIylkA_JP6pUpSK';
-    const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const db = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
     let produk = []; let allProduk = []; let keranjang = []; let kategoriAktif = 'Semua';
     let halamanAktif = 1; const perHalaman = 10; let produkFilter = [];
     let bannerIndex = 0; let bannerInterval; let startX = 0; let isDragging = false; let dragThreshold = false;
@@ -420,11 +420,9 @@
         gambarKolase += `</div>`;
         bannerOtomatis.push({judul: `🔥 DISKON MAWOR ${persen}% - ${jmlProduk} PRODUK 🔥`, subjudul: teksTgl, gambar_html: gambarKolase, link: `diskon${persen}`});
       }
-
       if(bannerOtomatis.length == 1){
         bannerOtomatis.push({judul: `SELAMAT DATANG DI SARAHMART`, subjudul: ``, gambar_html: `<img src="logo.jpg" style="width:100%;height:100%;object-fit:contain;background:white">`, link: `#produk`});
       }
-
       bannerOtomatis.forEach((b,i)=>{
         track.innerHTML += `<div class="banner-item" onclick="filterBanner('${b.link}')">${b.gambar_html}<div class="banner-text" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.9), -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">${b.judul}${b.subjudul? `<div style="font-size:11px;font-weight:bold;margin-top:3px;color:#ffeb3b;text-shadow: 2px 2px 4px rgba(0,0,0,0.9), -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">${b.subjudul}</div>` : ''}</div></div>`;
         dots.innerHTML += `<div class="dot ${i==0?'aktif':''}"></div>`;
@@ -437,16 +435,13 @@
       }
       initBannerSwipe();
     }
-
     function updateBannerPosition(){ const track = document.getElementById('banner-track'); track.style.transform = `translateX(-${bannerIndex*100}%)`; document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('aktif', i==bannerIndex)); }
     function nextBanner(){ const total = document.querySelectorAll('.banner-item').length; bannerIndex = (bannerIndex+1)%total; updateBannerPosition(); }
     function prevBanner(){ const total = document.querySelectorAll('.banner-item').length; bannerIndex = (bannerIndex-1+total)%total; updateBannerPosition(); }
     function initBannerSwipe(){ const track = document.getElementById('banner-track'); const slider = document.querySelector('.banner-slider'); slider.addEventListener('touchstart', e => {startX = e.touches[0].clientX; isDragging = true; track.classList.add('dragging'); clearInterval(bannerInterval);}); slider.addEventListener('touchend', e => { if(!isDragging) return; isDragging = false; track.classList.remove('dragging'); const diff = e.changedTouches[0].clientX - startX; if(diff > 50) prevBanner(); else if(diff < -50) nextBanner(); updateBannerPosition(); bannerInterval = setInterval(nextBanner, 4000); }); }
-
     function filterBanner(link){ if(dragThreshold) return; if(link.startsWith('diskon')){ const persen = link.replace('diskon',''); filterProdukByDiskon(persen); document.getElementById('daftar-produk').scrollIntoView({behavior: 'smooth'}); } }
     function filterProdukByDiskon(persen){ produkFilter = produk.filter(p => p.diskon == persen); kategoriAktif = 'Semua'; document.getElementById('btn-kategori').innerHTML = `📦 Semua Kategori <span style="float:right">▼</span>`; halamanAktif = 1; tampilProduk(); document.getElementById('btn-reset-filter').style.display = 'block'; }
     function resetFilter(){ produkFilter = allProduk; kategoriAktif = 'Semua'; document.getElementById('btn-kategori').innerHTML = `📦 Semua Kategori <span style="float:right">▼</span>`; halamanAktif = 1; tampilProduk(); document.getElementById('btn-reset-filter').style.display = 'none'; }
-
     async function loadProduk(){
       const container = document.getElementById('daftar-produk');
       const { data, error } = await db.from('prodak').select('*').order('deskripsi', {ascending: true}).order('nama', {ascending: true});
@@ -456,7 +451,6 @@
       produk = data; allProduk = data; produkFilter = data;
       buatListKategori(); tampilProduk(); loadBanner();
     }
-
     function buatListKategori(){
       const container = document.getElementById('list-kategori');
       const kategoriUnik = [...new Set(allProduk.map(p => p.deskripsi).filter(k => k))];
@@ -464,11 +458,9 @@
       kategoriUnik.forEach(kat => { html += `<div class="item-kategori ${kategoriAktif===kat?'aktif':''}" onclick="pilihKategori('${kat}')">🏷️ ${kat}</div>`; });
       container.innerHTML = html;
     }
-
     function bukaPopupKategori(){document.getElementById('popupKategori').style.display = 'flex';buatListKategori();}
     function tutupPopupKategori(){document.getElementById('popupKategori').style.display = 'none';}
     function pilihKategori(kat){ kategoriAktif = kat; document.getElementById('btn-kategori').innerHTML = `🏷️ ${kat} <span style="float:right">▼</span>`; halamanAktif = 1; cariProduk(); document.getElementById('btn-reset-filter').style.display = kat === 'Semua'? 'none' : 'block'; tutupPopupKategori(); }
-
     function tampilProduk(){
       const container = document.getElementById('daftar-produk');
       container.innerHTML = "";
@@ -500,7 +492,6 @@
       });
       updatePagination();
     }
-
     function cariProduk(){
       const keyword = document.getElementById('cari').value.toLowerCase();
       produkFilter = allProduk;
@@ -509,21 +500,17 @@
       halamanAktif = 1;
       tampilProduk();
     }
-
     function gantiHalaman(arah){
       const posisiScroll = window.scrollY;
       halamanAktif += arah;
       tampilProduk();
       setTimeout(() => {window.scrollTo(0, posisiScroll);}, 50);
     }
-
     function updatePagination(){
       const totalHalaman = Math.ceil(produkFilter.length / perHalaman);
       document.getElementById('btn-prev').disabled = halamanAktif == 1;
       document.getElementById('btn-next').disabled = halamanAktif == totalHalaman || totalHalaman == 0;
     }
-
-    // FUNGSI KERANJANG UDAH PAKE LOCALSTORAGE
     function tambahKeranjang(id, hargaFinal, tombol){
       const itemProduk = produk.find(p => p.id === id);
       const itemKeranjang = keranjang.find(x=>x.id === id);
@@ -534,17 +521,14 @@
       }
       const img = tombol.closest('.card').querySelector('img');
       animasiTerbang(img);
-
       if(itemKeranjang){itemKeranjang.jumlah++}
       else{keranjang.push({...itemProduk, harga: hargaFinal, jumlah:1})}
-
       localStorage.setItem('keranjang_sarahmart', JSON.stringify(keranjang)); // SIMPEN NENG LOCALSTORAGE
       tombol.innerHTML = '✓ Ditambah';
       tombol.style.background = 'linear-gradient(135deg, #22c55e 0%, #15803d 100%)';
       setTimeout(()=>{tombol.innerHTML = '+ Tambah'; tombol.style.background = 'linear-gradient(135deg, #16a34a 0%, #22c55e 100%)';}, 500);
       updateKeranjangBar();
     }
-
     function animasiTerbang(img){
       const keranjangIcon = document.querySelector('.icon-keranjang-atas');
       const flyImg = img.cloneNode(true);
@@ -567,14 +551,12 @@
         setTimeout(()=>document.getElementById('jumlah-lencana').classList.remove('goyang'), 500);
       }, 850);
     }
-
     function updateKeranjangBar(){
       const keranjangLocal = JSON.parse(localStorage.getItem('keranjang_sarahmart')) || [];
       let totalItem = keranjangLocal.reduce((a,b)=>a+b.jumlah,0);
       document.getElementById('jumlah-lencana').innerHTML = totalItem;
       document.getElementById('jumlah-lencana').style.display = totalItem > 0? 'flex' : 'none';
     }
-
     function showNotifAyu(pesan, tipe = 'sukses'){
       const popup = document.getElementById('popupNotif');
       const icon = document.getElementById('icon-notif');
@@ -593,7 +575,6 @@
       popup.style.display = 'flex';
       setTimeout(()=>{tutupNotif()}, 2500);
     }
-
     function tutupNotif(){document.getElementById('popupNotif').style.display = 'none';}
   </script>
 </body>

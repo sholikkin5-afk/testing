@@ -7,34 +7,29 @@
   <title>Pesanan Saya - SARAHmart</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <style>
-    body{background:#f0fdf4;padding:20px}
-    .pesanan-item{background:white;border-radius:12px;padding:12px;margin:10px 0;border:2px solid #dcfce7;box-shadow:0 2px 5px rgba(0,0,0,0.05)}
-    .status-badge{padding:4px 10px;border-radius:15px;font-size:11px;font-weight:bold;color:white}
-    .status-baru{background:#ff9800}
-    .status-proses{background:#2563eb}
-    .status-selesai{background:#22c55e}
-    .detail-produk{margin-top:8px;padding-top:8px;border-top:1px dashed #dcfce7;font-size:13px}
-    .item-row{display:flex;gap:8px;margin-bottom:6px;align-items:center}
-    .item-row img{width:40px;height:40px;border-radius:8px;object-fit:cover}
-  </style>
+  <script src="config.js"></script> 
 </head>
-<body>
-  <div class="max-w-3xl mx-auto">
-    <div class="flex items-center justify-between mb-4">
-      <button onclick="window.location.href='index.html'" class="bg-white px-4 py-2 rounded-xl shadow text-ijo-biru-700 font-bold">← Kembali Belanja</button>
-      <h3 class="text-xl font-bold text-ijo-biru-700">📦 Riwayat Pesanan</h3>
+<body class="bg-[#f0fdf4] min-h-screen">
+  <div class="max-w-2xl mx-auto p-4">
+    
+    <div class="flex items-center justify-between mb-5">
+      <button onclick="window.location.href='index.html'" class="bg-white px-4 py-2 rounded-xl shadow-md text-[#16a34a] font-bold flex items-center gap-2 hover:bg-green-50">
+        ← Kembali
+      </button>
+      <h3 class="text-xl font-bold text-[#15803d]">📦 Riwayat Pesanan</h3>
     </div>
 
-    <button onclick="loadPesanan()" class="w-full bg-gradient-to-r from-ijo-biru-600 to-biru-ijo-600 text-white py-3 rounded-xl font-bold shadow-lg mb-4">Muat Pesanan Saya</button>
-    <div id="list-pesanan"><p class="text-center text-gray-500">Klik tombol diatas untuk memuat pesanan</p></div>
+    <div id="list-pesanan" class="space-y-4">
+      <p class="text-center text-gray-500 py-10">Loading data pesanan...</p>
+    </div>
   </div>
 
   <script>
-    const SUPABASE_URL = 'https://fbxfoorzeojsqnzcmvic.supabase.co';
-    const SUPABASE_ANON_KEY = 'sb_publishable_Xg3DLbSsRFTsU5ZjxIylkA_JP6pUpSK';
-    const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const db = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+    const ADMIN_WA = '6281328282446';
+    
     let dataProfil = null;
+    let semuaPesanan = []; // TAMBAH IKI BEN ISO GOLEK DATA
 
     document.addEventListener('DOMContentLoaded', async () => {
       const { data: { user }} = await db.auth.getUser();
@@ -53,63 +48,103 @@
     });
 
     async function loadPesanan(){
-      if(!dataProfil) return alert('Lengkapi profil dulu');
+      if(!dataProfil) return;
       const hp = dataProfil.no_wa;
-      document.getElementById('list-pesanan').innerHTML = 'Loading...';
+      const container = document.getElementById('list-pesanan');
+      container.innerHTML = '<p class="text-center text-gray-500 py-10">Loading...</p>';
       
       const {data, error} = await db.from('pesenan').select('*').eq('no_hp', hp).order('created_at', {ascending:false});
       
       if(error){
-        document.getElementById('list-pesanan').innerHTML = `<p class="text-red-500">Error: ${error.message}</p>`; 
+        container.innerHTML = `<p class="text-red-500 text-center">Error: ${error.message}</p>`; 
         return;
       }
       
-      const container = document.getElementById('list-pesanan');
+      semuaPesanan = data || []; // SIMPEN DATA NE
+
       if(!data || data.length == 0){
-        container.innerHTML = '<p style="text-align:center">Belum ada pesanan</p>';
+        container.innerHTML = '<p class="text-center text-gray-500 py-10">😅 Belum ada pesanan</p>';
         return;
       }
       
       container.innerHTML = '';
       data.forEach(p => {
-        let statusClass = p.status == 'Baru' ? 'status-baru' : p.status == 'Proses' ? 'status-proses' : 'status-selesai';
+        let statusClass = p.status == 'Baru' ? 'bg-orange-500' : p.status == 'Proses' ? 'bg-blue-500' : p.status == 'Selesai' ? 'bg-green-500' : 'bg-red-500';
         let detailHTML = '';
         
-        // AMBIL DARI KOLOM data_keranjang
         let items = [];
         try {
           items = typeof p.data_keranjang === 'string' ? JSON.parse(p.data_keranjang) : p.data_keranjang;
         } catch(e){ console.log("Gagal parse data_keranjang", e) }
 
         if(items && items.length > 0){
-          detailHTML = `<div class="detail-produk"><b>Detail Pesanan:</b>`;
+          detailHTML = `<div class="mt-3 pt-3 border-t border-dashed border-green-100"><p class="font-semibold text-sm mb-2">Detail Pesanan:</p>`;
           items.forEach(i => {
             let subtotal = i.harga * i.jumlah;
             detailHTML += `
-              <div class="item-row">
-                <img src="${i.gambar_url}" alt="${i.nama}">
-                <div>
-                  <div class="font-semibold">${i.nama}</div>
-                  <div class="text-xs text-gray-600">${i.jumlah} x Rp ${Number(i.harga).toLocaleString('id-ID')} = <b>Rp ${subtotal.toLocaleString('id-ID')}</b></div>
+              <div class="flex gap-3 items-center mb-2">
+                <img src="${i.gambar_url}" class="w-12 h-12 rounded-lg object-cover border" onerror="this.src='https://placehold.co/40'">
+                <div class="flex-1">
+                  <div class="font-semibold text-sm">${i.nama}</div>
+                  <div class="text-xs text-gray-600">${i.jumlah} x Rp ${Number(i.harga).toLocaleString('id-ID')} = <b class="text-[#16a34a]">Rp ${subtotal.toLocaleString('id-ID')}</b></div>
                 </div>
               </div>`;
           });
           detailHTML += `</div>`;
-        } else {
-          detailHTML = `<div class="detail-produk text-gray-500">*Detail produk tidak tersimpan</div>`;
         }
 
+        // LOGIKA TOMBOL BARU
+        let pesanWA = `Halo Admin SARAHmart%0ASaya mau tanya pesanan ID: ${p.id_pesanan}%0ANama: ${p.nama_pelanggan}`;
+        let bisaBatal = p.status == 'Baru'; // MUNG ISO BATAL NEK STATUS BARU
+        
+        let tombolBatal = bisaBatal 
+          ? `<button onclick="batalPesanan('${p.id_pesanan}')" class="bg-red-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-red-600">❌ Batalkan</button>` 
+          : `<button disabled class="bg-gray-300 text-gray-500 text-xs font-bold px-3 py-1.5 rounded-lg cursor-not-allowed">❌ Tidak bisa dibatalkan</button>`;
+        
+        let tombolBeliLagi = p.status == 'Selesai' ? `<button onclick="beliLagi(${p.id})" class="bg-[#16a34a] text-white text-xs font-bold px-3 py-1.5 rounded-lg">🛒 Beli Lagi</button>` : '';
+
         container.innerHTML += `
-          <div class="pesanan-item">
-            <div style="display:flex;justify-content:space-between">
-              <b>ID: ${p.id_pesanan}</b>
-              <span class="status-badge ${statusClass}">${p.status}</span>
+          <div class="bg-white rounded-2xl p-4 shadow-md border border-green-100">
+            <div class="flex justify-between items-start mb-2">
+              <div>
+                <b class="text-sm">ID: ${p.id_pesanan}</b>
+                <p class="text-xs text-gray-500">${new Date(p.created_at).toLocaleString('id-ID')}</p>
+              </div>
+              <span class="${statusClass} text-white text-xs font-bold px-3 py-1 rounded-full">${p.status}</span>
             </div>
-            <small>${new Date(p.created_at).toLocaleString('id-ID')}</small>
-            <p style="margin:8px 0">Total: <b style="color:#22c55e">Rp ${Number(p.total_harga).toLocaleString('id-ID')}</b></p>
+            
+            <p class="text-sm">Total: <b class="text-lg text-[#16a34a]">Rp ${Number(p.total_harga).toLocaleString('id-ID')}</b></p>
+            
             ${detailHTML}
+
+            <div class="mt-3 flex-wrap gap-2">
+              <a href="https://wa.me/${ADMIN_WA}?text=${pesanWA}" target="_blank" class="bg-green-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg">💬 Tanya Admin</a>
+              ${tombolBatal}
+              ${tombolBeliLagi}
+            </div>
           </div>`;
       });
+    }
+
+    async function batalPesanan(id_pesanan){
+      if(!confirm('Yakin mau batalkan pesanan '+id_pesanan+'?')) return;
+      
+      const {error} = await db.from('pesenan').update({status: 'Dibatalkan'}).eq('id_pesanan', id_pesanan);
+      if(error){ alert('Gagal batal: '+error.message) } 
+      else {
+        alert('Pesanan dibatalkan');
+        loadPesanan();
+      }
+    }
+
+    function beliLagi(id){
+      const pesanan = semuaPesanan.find(p => p.id == id);
+      if(!pesanan) return;
+      let items = typeof pesanan.data_keranjang === 'string' ? JSON.parse(pesanan.data_keranjang) : pesanan.data_keranjang;
+      
+      localStorage.setItem('keranjang_sarahmart', JSON.stringify(items));
+      alert('Produk ditambahkan ke keranjang');
+      window.location.href = 'keranjang.html';
     }
   </script>
 </body>
