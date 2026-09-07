@@ -312,15 +312,42 @@ const db = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANO
     }
 
     async function cekProfilUser(){
-      const { data: { user } } = await db.auth.getUser();
-      if(!user) return window.location.href = 'index.html';
-      const {data} = await db.from('profiles').select('*').eq('id', user.id).single();
-      dataProfil = data;
-      if(!data ||!data.no_wa){
-        document.getElementById('popupProfil').style.display = 'flex';
-        if(data){ document.getElementById('profil-nama').value = data.nama_lengkap || ''; document.getElementById('profil-wa').value = data.no_wa || ''; }
-      }
+  const { data: { user }} = await db.auth.getUser();
+  if(!user) return window.location.href = 'index.html';
+  
+  const {data} = await db.from('profiles').select('*').eq('id', user.id).single();
+  dataProfil = data;
+
+  // 1. NEK DATA GK ONOK SAMA SEKALI -> MUNCULNO POPUP KOSONG
+  if(!data){
+    document.getElementById('popupProfil').style.display = 'flex';
+    return;
+  }
+
+  // 2. AUTO ISI KABEKE FORM SENG WES ONOK NENG DB
+  document.getElementById('profil-nama').value = data.nama_lengkap || '';
+  document.getElementById('profil-wa').value = data.no_wa || '';
+  document.getElementById('profil-desa').value = data.desa || '';
+  document.getElementById('profil-jalan').value = data.jalan || '';
+  document.getElementById('profil-kecamatan').value = data.kecamatan || '';
+  document.getElementById('profil-kabupaten').value = data.kabupaten || '';
+
+  // 3. CEK APAKAH PERLU VERIFIKASI ULANG
+  // Nek WA durung diverifikasi ATAU durung ono data WA -> MUNCULNO POPUP
+  if(!data.no_wa || data.no_wa_verified !== true){
+    document.getElementById('popupProfil').style.display = 'flex';
+    // Nek WA wes onok tapi durung verified, tombol simpan langsung aktif
+    if(data.no_wa){
+      document.getElementById('btn-simpan-final').disabled = false;
+      document.getElementById('btn-simpan-final').classList.remove('bg-gray-400');
+      document.getElementById('btn-simpan-final').classList.add('bg-gradient-to-r', 'from-ijo-tosca-600', 'to-ungu-mewah-600');
     }
+  } else {
+    // 4. NEK WES LENGKAP & VERIFIED -> POPUP GAK USAH MUNCUL
+    document.getElementById('popupProfil').style.display = 'none';
+    showNotifAyu('Selamat datang kembali, ' + data.nama_lengkap, 'sukses');
+  }
+}
 
     function setupOTPInputs(){
       const inputs = document.querySelectorAll('.otp-input');
@@ -589,7 +616,7 @@ const db = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANO
         if(p.created_at && p.created_at >= tglBaru){ badgeTambahan += `<div class="badge-baru">BARU</div>`; }
         else if(p.terjual && p.terjual >= 20){ badgeTambahan += `<div class="badge-terlaris">🔥 TERLARIS</div>`; }
         if(diskonAktif && badgeTambahan.includes('badge-baru')){ badgeTambahan = badgeTambahan.replace('right:10px','right:55px'); }
-        container.innerHTML += `<div class="card">${badgeDiskon}${badgeTambahan}<img src="${p.gambar_url}"><h3>${p.nama}</h3><div class="harga-wrap"><p>${hargaTampil}</p><div class="stok-info">${stokText}</div><button class="btn-tambah" ${btnDisabled} onclick="tambahKeranjang(${p.id}, ${hargaFinal}, this)">+ Tambah</button></div></div>`;
+        container.innerHTML += `<div class="card cursor-pointer" onclick="window.location.href='detail.html?id=${p.id}'">${badgeDiskon}${badgeTambahan}<img src="${p.gambar_url}"><h3>${p.nama}</h3><div class="harga-wrap"><p>${hargaTampil}</p><div class="stok-info">${stokText}</div><button class="btn-tambah" ${btnDisabled} onclick="event.stopPropagation(); tambahKeranjang(${p.id}, ${hargaFinal}, this)">+ Tambah</button></div></div>`;
       });
       updatePagination();
     }
