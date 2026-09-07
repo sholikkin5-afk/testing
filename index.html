@@ -4,138 +4,331 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login & Daftar - Sarahmart</title>
+
+    <!-- PWA MANIFEST -->
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#16a34a">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-</head>
-<body class="bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center min-h-screen p-4">
 
+    <!-- Tailwind CSS untuk styling cepat dan modern -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'ijo-biru': {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534'
+                        },
+                        'biru-ijo': {
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-ijo-biru-50 to-blue-50 flex items-center justify-center min-h-screen p-4">
+
+    <!-- LOADING PAS CEK SESI -->
     <div id="loading" class="text-center">
-        <div class="w-12 h-12 border-4 border-green-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
+        <div class="w-12 h-12 border-4 border-ijo-biru-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
         <p class="mt-3 text-slate-600">Mengecek sesi...</p>
     </div>
 
-    <div id="auth-container" class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md hidden">
+    <!-- KONTAINER UTAMA LOGIN -->
+    <div id="auth-container" class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md border-ijo-biru-100 hidden">
         <div class="text-center mb-6">
+            <!-- LOGO -->
             <img src="logo-sarahmart.png" alt="Logo Sarahmart" class="w-40 h-20 mx-auto mb-3 rounded-2xl shadow-md object-cover">
-            <h2 class="text-2xl font-bold text-center text-green-700">Masuk ke Sarahmart</h2>
+            <h2 class="text-2xl font-bold text-center bg-gradient-to-r from-ijo-biru-700 to-biru-ijo-700 bg-clip-text text-transparent">Masuk ke Sarahmart</h2>
         </div>
+
         <form id="form-login" onsubmit="handleLogin(event)" class="space-y-4">
-            <input type="email" id="login-email" required placeholder="Email" class="w-full px-4 py-2.5 border rounded-xl">
-            <input type="password" id="login-password" required placeholder="Password" class="w-full px-4 py-2.5 border rounded-xl">
-            <button type="submit" class="w-full bg-green-600 text-white py-2.5 rounded-xl font-semibold">Masuk</button>
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Email</label>
+                <input type="email" id="login-email" required class="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-ijo-biru-500 focus:border-ijo-biru-500 transition">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Password</label>
+                <input type="password" id="login-password" required class="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-ijo-biru-500 focus:border-ijo-biru-500 transition">
+            </div>
+
+            <!-- Tombol Lihat Password - FITUR LAMA AMAN -->
+            <div class="flex items-center">
+                <input type="checkbox" id="show-login-password" onclick="togglePassword('login-password')" class="h-4 w-4 text-ijo-biru-600 rounded border-slate-300 focus:ring-ijo-biru-500">
+                <label for="show-login-password" class="ml-2 text-sm text-slate-600">Lihat Password</label>
+            </div>
+
+            <button type="submit" class="w-full bg-gradient-to-r from-ijo-biru-600 to-biru-ijo-600 text-white py-2.5 rounded-xl font-semibold hover:from-ijo-biru-700 hover:to-biru-ijo-700 transition shadow-md">Masuk</button>
         </form>
+
         <div class="flex justify-between items-center mt-6 text-sm">
-            <button onclick="openModal('modal-daftar')" class="text-green-600 font-medium">Belum punya akun? Daftar</button>
-            <button onclick="openModal('modal-lupa')" class="text-slate-500">Lupa Password?</button>
+            <button onclick="openModal('modal-daftar')" class="text-ijo-biru-600 hover:text-ijo-biru-700 font-medium hover:underline transition">Belum punya akun? Daftar</button>
+            <button onclick="openModal('modal-lupa')" class="text-slate-500 hover:text-slate-700 hover:underline transition">Lupa Password?</button>
         </div>
     </div>
 
-    <!-- MODAL DAFTAR -->
-    <div id="modal-daftar" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4 z-50">
-        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md">
-            <h3 class="text-xl font-bold text-center mb-4 text-green-700">Daftar Akun Baru</h3>
+    <!-- MODAL DAFTAR - NAMA & WA UDAH DIHAPUS -->
+    <div id="modal-daftar" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto border-ijo-biru-100">
+            <div class="text-center mb-4">
+                <h3 class="text-xl font-bold bg-gradient-to-r from-ijo-biru-700 to-biru-ijo-700 bg-clip-text text-transparent">Daftar Akun Baru</h3>
+            </div>
+
             <form id="form-daftar" onsubmit="handleDaftar(event)" class="space-y-4">
-                <input type="email" id="daftar-email" required placeholder="Email" class="w-full px-4 py-2.5 border rounded-xl">
-                <input type="text" id="daftar-username" required placeholder="Username. Wajib ada angka & symbol" class="w-full px-4 py-2.5 border rounded-xl">
-                <p id="username-error" class="text-xs text-red-500 hidden"></p>
-                <input type="password" id="daftar-password" required placeholder="Password" class="w-full px-4 py-2.5 border rounded-xl">
-                <input type="password" id="daftar-repassword" required placeholder="Ulangi Password" class="w-full px-4 py-2.5 border rounded-xl">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Email</label>
+                    <input type="email" id="daftar-email" required class="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-ijo-biru-500 focus:border-ijo-biru-500 transition">
+                </div>
+
+                <!-- USERNAME MANUAL + WAJIB ANGKA & SYMBOL - FITUR LAMA AMAN -->
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Username <span class="text-red-500">*</span></label>
+                    <p class="text-xs text-slate-500 mb-1">Wajib ada Angka & Symbol. Contoh: budi_123</p>
+                    <input type="text" id="daftar-username" required placeholder="min 4 karakter" class="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-ijo-biru-500 focus:border-ijo-biru-500 transition">
+                    <p id="username-error" class="text-xs text-red-500 mt-1 hidden"></p>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Password</label>
+                    <input type="password" id="daftar-password" required class="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-ijo-biru-500 focus:border-ijo-biru-500 transition">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Ulangi Password</label>
+                    <input type="password" id="daftar-repassword" required class="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-ijo-biru-500 focus:border-ijo-biru-500 transition">
+                </div>
+
+                <!-- Lihat Password - FITUR LAMA AMAN -->
+                <div class="flex items-center">
+                    <input type="checkbox" id="show-daftar-password" onclick="toggleMultiplePassword(['daftar-password', 'daftar-repassword'])" class="h-4 w-4 text-ijo-biru-600 rounded border-slate-300 focus:ring-ijo-biru-500">
+                    <label for="show-daftar-password" class="ml-2 text-sm text-slate-600">Lihat Password</label>
+                </div>
+
                 <div class="flex space-x-3 pt-2">
-                    <button type="button" onclick="closeModal('modal-daftar')" class="w-1/2 bg-slate-200 py-2.5 rounded-xl">Batal</button>
-                    <button type="submit" class="w-1/2 bg-green-600 text-white py-2.5 rounded-xl">Daftar</button>
+                    <button type="button" onclick="closeModal('modal-daftar')" class="w-1/2 bg-slate-200 text-slate-700 py-2.5 rounded-xl font-semibold hover:bg-slate-300 transition">Batal</button>
+                    <button type="submit" class="w-1/2 bg-gradient-to-r from-ijo-biru-600 to-biru-ijo-600 text-white py-2.5 rounded-xl font-semibold hover:from-ijo-biru-700 hover:to-biru-ijo-700 transition shadow-md">Daftar</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- MODAL OTP EMAIL BARU -->
-    <div id="modal-otp" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4 z-50">
-        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md">
-            <h3 class="text-xl font-bold text-center mb-2">Verifikasi Email</h3>
-            <p class="text-sm text-slate-500 text-center mb-4">Kode 6 digit sudah dikirim ke <b id="email-otp-target"></b></p>
-            <form id="form-otp" onsubmit="handleVerifyOTP(event)" class="space-y-4">
-                <input type="text" id="input-otp" required maxlength="6" placeholder="Masukkan 6 digit kode" class="w-full px-4 py-2.5 border rounded-xl text-center text-2xl tracking-widest">
-                <button type="submit" class="w-full bg-green-600 text-white py-2.5 rounded-xl font-semibold">Verifikasi</button>
+    <!-- MODAL INPUT OTP BARU -->
+    <div id="modal-otp" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-sm border-ijo-biru-100">
+            <div class="text-center mb-4">
+                <h3 class="text-xl font-bold bg-gradient-to-r from-ijo-biru-700 to-biru-ijo-700 bg-clip-text text-transparent">Masukkan Kode OTP</h3>
+                <p class="text-sm text-slate-500 mt-2">Kode 6 digit sudah dikirim ke email kamu</p>
+            </div>
+            <form onsubmit="handleVerifyOTP(event)" class="space-y-4">
+                <input type="text" id="otp-input" maxlength="6" required placeholder="000000" class="w-full px-4 py-3 border-2 border-ijo-biru-500 rounded-xl text-center text-2xl tracking-[10px] font-bold focus:outline-none focus:ring-2 focus:ring-ijo-biru-500">
+                <input type="hidden" id="otp-email">
+                <button type="submit" class="w-full bg-gradient-to-r from-ijo-biru-600 to-biru-ijo-600 text-white py-2.5 rounded-xl font-semibold hover:from-ijo-biru-700 hover:to-biru-ijo-700 transition shadow-md">Verifikasi & Masuk</button>
             </form>
-            <button onclick="kirimUlangOTP()" class="w-full text-sm text-green-600 mt-3">Kirim Ulang Kode</button>
+            <p class="text-center text-xs mt-3"><button onclick="closeModal('modal-otp')" class="text-slate-500 hover:underline">Batal</button></p>
         </div>
     </div>
 
-<script>
-    const SUPABASE_URL = 'https://fbxfoorzeojsqnzcmvic.supabase.co';
-    const SUPABASE_ANON_KEY = 'sb_publishable_Xg3DLbSsRFTsU5ZjxIylkA_JP6pUpSK';
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    const REDIRECT_URL = 'sarahmart.html';
-    let emailUntukOTP = '';
+    <!-- MODAL LUPA PASSWORD - FITUR LAMA AMAN -->
+    <div id="modal-lupa" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md border-ijo-biru-100">
+            <div class="text-center mb-4">
+                <h3 class="text-xl font-bold bg-gradient-to-r from-ijo-biru-700 to-biru-ijo-700 bg-clip-text text-transparent">Reset Password</h3>
+            </div>
 
-    document.addEventListener('DOMContentLoaded', async () => {
-        const { data: { session } }= await supabaseClient.auth.getSession();
-        if (session) window.location.href = REDIRECT_URL;
-        else {
-            document.getElementById('loading').classList.add('hidden');
-            document.getElementById('auth-container').classList.remove('hidden');
+            <form onsubmit="handleLupaPassword(event)" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Masukkan Email Anda</label>
+                    <input type="email" id="lupa-email" required class="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-ijo-biru-500 focus:border-ijo-biru-500 transition">
+                </div>
+
+                <div class="flex space-x-3 pt-2">
+                    <button type="button" onclick="closeModal('modal-lupa')" class="w-1/2 bg-slate-200 text-slate-700 py-2.5 rounded-xl font-semibold hover:bg-slate-300 transition">Batal</button>
+                    <button type="submit" class="w-1/2 bg-gradient-to-r from-ijo-biru-600 to-biru-ijo-600 text-white py-2.5 rounded-xl font-semibold hover:from-ijo-biru-700 hover:to-biru-ijo-700 transition shadow-md">Kirim Link</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- NOTIFIKASI UPDATE PWA -->
+    <div id="update-notif" class="hidden fixed bottom-4 left-1/2 -translate-x-1/2 bg-ijo-biru-700 text-white px-5 py-3 rounded-xl shadow-2xl z-[9999] flex items-center gap-3">
+      <span>Ada versi baru tersedia!</span>
+      <button id="btn-reload" class="bg-white text-ijo-biru-700 font-bold px-3 py-1 rounded-lg">Update</button>
+    </div>
+
+    <!-- PANGGIL FILE PWA EKSTERNAL -->
+    <script src="/pwa.js"></script>
+
+    <!-- SKRIP INTEGRASI SUPABASE & LOGIKA APLIKASI -->
+    <script>
+        const SUPABASE_URL = 'https://fbxfoorzeojsqnzcmvic.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_Xg3DLbSsRFTsU5ZjxIylkA_JP6pUpSK';
+
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const REDIRECT_URL = 'sarahmart.html';
+
+        // CEK SESI PAS BUKA HALAMAN - FITUR LAMA AMAN
+        document.addEventListener('DOMContentLoaded', async () => {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (session) {
+                window.location.href = REDIRECT_URL;
+            } else {
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('auth-container').classList.remove('hidden');
+            }
+        });
+
+        // Fungsi Modal - FITUR LAMA AMAN
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.remove('hidden');
         }
-    });
 
-    function openModal(id) { document.getElementById(id).classList.remove('hidden'); document.getElementById(id).classList.add('flex'); }
-    function closeModal(id) { document.getElementById(id).classList.add('hidden'); document.getElementById(id).classList.remove('flex'); }
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
 
-    function validateUsername(username) {
-        const errorEl = document.getElementById('username-error');
-        errorEl.classList.add('hidden');
-        if (username.length < 4) { errorEl.innerText = 'Minimal 4 karakter'; errorEl.classList.remove('hidden'); return false; }
-        if (!/[0-9]/.test(username)) { errorEl.innerText = 'Wajib ada angka'; errorEl.classList.remove('hidden'); return false; }
-        if (!/[^a-zA-Z0-9]/.tekst(username)) { errorEl.innerText = 'Wajib ada symbol _.-'; errorEl.classList.remove('hidden'); return false; }
-        return true;
-    }
+        // Toggle Lihat Password - FITUR LAMA AMAN
+        function togglePassword(id) {
+            const input = document.getElementById(id);
+            input.type = input.type === 'password'? 'text' : 'password';
+        }
 
-    async function handleLogin(e) {
-        e.preventDefault();
-        const { error } = await supabaseClient.auth.signInWithPassword({ 
-            email: document.getElementById('login-email').value, 
-            password: document.getElementById('login-password').value 
-        });
-        if (error) alert('Login Gagal: ' + error.message); else window.location.href = REDIRECT_URL;
-    }
+        function toggleMultiplePassword(ids) {
+            ids.forEach(id => togglePassword(id));
+        }
 
-    // DAFTAR > KIRIM OTP EMAIL
-    async function handleDaftar(e) {
-        e.preventDefault();
-        const email = document.getElementById('daftar-email').value;
-        const username = document.getElementById('daftar-username').value;
-        const password = document.getElementById('daftar-password').value;
+        // VALIDASI USERNAME BARU: WAJIB ADA ANGKA + SYMBOL - FITUR LAMA AMAN
+        function validateUsername(username) {
+            const errorEl = document.getElementById('username-error');
+            errorEl.classList.add('hidden');
 
-        if (document.getElementById('daftar-password').value !== document.getElementById('daftar-repassword').value) { alert('Password tidak sama!'); return; }
-        if (!validateUsername(username)) return;
+            if (username.length < 4) {
+                errorEl.innerText = 'Username minimal 4 karakter';
+                errorEl.classList.remove('hidden');
+                return false;
+            }
+            if (!/[0-9]/.test(username)) {
+                errorEl.innerText = 'Username wajib ada angka 0-9';
+                errorEl.classList.remove('hidden');
+                return false;
+            }
+            if (!/[^a-zA-Z0-9]/.test(username)) {
+                errorEl.innerText = 'Username wajib ada symbol. Contoh: _. -';
+                errorEl.classList.remove('hidden');
+                return false;
+            }
+            return true;
+        }
 
-        const { error } = await supabaseClient.auth.signUp({
-            email, password, options: { data: { username } }
-        });
-        if (error) { alert('Gagal: ' + error.message); return; }
+        // Handle Login - FITUR LAMA AMAN
+        async function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
 
-        emailUntukOTP = email;
-        await supabaseClient.auth.signInWithOtp({ email, options: { shouldCreateUser: false } });
-        
-        document.getElementById('email-otp-target').innerText = email;
-        closeModal('modal-daftar');
-        openModal('modal-otp');
-    }
+            const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
 
-    // VERIFIKASI KODE OTP
-    async function handleVerifyOTP(e) {
-        e.preventDefault();
-        const token = document.getElementById('input-otp').value;
-        const { error } = await supabaseClient.auth.verifyOtp({ email: emailUntukOTP, token, type: 'email' });
-        if (error) alert('Kode Salah: ' + error.message); 
-        else { alert('Akun berhasil diverifikasi!'); window.location.href = REDIRECT_URL; }
-    }
+            if (error) {
+                alert('Login Gagal: ' + error.message);
+            } else {
+                window.location.href = REDIRECT_URL;
+            }
+        }
 
-    async function kirimUlangOTP() {
-        await supabaseClient.auth.signInWithOtp({ email: emailUntukOTP });
-        alert('Kode baru dikirim!');
-    }
-</script>
+        // Handle Daftar - UDAH OTP + NAMA & WA DIHAPUS - FITUR LAMA AMAN
+        async function handleDaftar(e) {
+            e.preventDefault();
+            const email = document.getElementById('daftar-email').value;
+            const username = document.getElementById('daftar-username').value;
+            const password = document.getElementById('daftar-password').value;
+            const repassword = document.getElementById('daftar-repassword').value;
+
+            if (password!== repassword) {
+                alert('Password dan Ulangi Password tidak sama!');
+                return;
+            }
+
+            if (!validateUsername(username)) return;
+
+            // 1. Daftar user dulu
+            const { error: signUpError } = await supabaseClient.auth.signUp({
+                email: email,
+                password: password,
+                options: {
+                    data: { username: username }
+                }
+            });
+
+            if (signUpError) {
+                alert('Pendaftaran Gagal: ' + signUpError.message);
+                return;
+            }
+
+            // 2. Langsung kirim OTP
+            const { error: otpError } = await supabaseClient.auth.signInWithOtp({
+                email: email,
+                options: { shouldCreateUser: false }
+            });
+
+            if (otpError) {
+                alert('Gagal kirim OTP: ' + otpError.message);
+                return;
+            }
+
+            // 3. Buka modal input OTP
+            document.getElementById('otp-email').value = email;
+            closeModal('modal-daftar');
+            openModal('modal-otp');
+            alert('Kode 6 digit sudah dikirim ke email kamu!');
+        }
+
+        // VERIFIKASI OTP - BARU
+        async function handleVerifyOTP(e) {
+            e.preventDefault();
+            const email = document.getElementById('otp-email').value;
+            const token = document.getElementById('otp-input').value;
+
+            const { data, error } = await supabaseClient.auth.verifyOtp({
+                email: email,
+                token: token,
+                type: 'email'
+            });
+
+            if (error) {
+                alert('Kode salah: ' + error.message);
+            } else {
+                alert('Verifikasi berhasil!');
+                window.location.href = REDIRECT_URL;
+            }
+        }
+
+        // Handle Lupa Password - FITUR LAMA AMAN
+        async function handleLupaPassword(e) {
+            e.preventDefault();
+            const email = document.getElementById('lupa-email').value;
+
+            const { data, error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+                redirectTo: window.location.origin + '/' + REDIRECT_URL,
+            });
+
+            if (error) {
+                alert('Gagal mengirim link reset: ' + error.message);
+            } else {
+                alert('Link reset password telah dikirim ke email Anda.');
+                closeModal('modal-lupa');
+            }
+        }
+    </script>
 </body>
 </html>
