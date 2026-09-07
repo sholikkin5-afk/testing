@@ -258,23 +258,44 @@ const db = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANO
       if(!user) return window.location.href = 'index.html';
       const {data} = await db.from('profiles').select('*').eq('id', user.id).single();
       dataProfil = data;
-      if(!data ||!data.no_wa_verified){
+      if(!data ||!data.no_wa){
         document.getElementById('popupProfil').style.display = 'flex';
         if(data){ document.getElementById('profil-nama').value = data.nama_lengkap || ''; document.getElementById('profil-wa').value = data.no_wa || ''; }
       }
     }
 
     function setupOTPInputs(){
-      const inputs = document.querySelectorAll('.otp-input');
-      inputs.forEach((input, index) => {
-        input.addEventListener('input', e => {
-          if(e.target.value.length === 1 && index < inputs.length - 1){ inputs[index + 1].focus(); }
-        });
-        input.addEventListener('keydown', e => {
-          if(e.key === 'Backspace' &&!e.target.value && index > 0){ inputs[index - 1].focus(); }
-        });
+  const inputs = document.querySelectorAll('.otp-input');
+
+  inputs.forEach((input, index) => {
+    // 1. Auto pindah kotak pas ngetik
+    input.addEventListener('input', e => {
+      e.target.value = e.target.value.replace(/[^0-9]/g, ''); // mek angka tok
+      if(e.target.value.length === 1 && index < inputs.length - 1){
+        inputs[index + 1].focus();
+      }
+    });
+
+    // 2. Backspace balik ke kotak sebelumnya
+    input.addEventListener('keydown', e => {
+      if(e.key === 'Backspace' &&!e.target.value && index > 0){
+        inputs[index - 1].focus();
+      }
+    });
+
+    // 3. BISA PASTE - Pas paste langsung kebagi ke 6 kotak
+    input.addEventListener('paste', e => {
+      e.preventDefault();
+      const pasteData = e.clipboardData.getData('text').replace(/[^0-9]/g, '').slice(0, 6); // ambil angka tok, max 6
+      pasteData.split('').forEach((char, i) => {
+        if(inputs[i]) inputs[i].value = char;
       });
-    }
+      // fokus ke kotak terakhir sing keisi
+      const lastIndex = Math.min(pasteData.length, 5);
+      inputs[lastIndex].focus();
+    });
+  });
+}
 
     async function kirimKodeVerifikasi(e){
       e.preventDefault();
@@ -315,20 +336,30 @@ const db = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANO
       }, 1000);
     }
 
-    async function verifikasiKode(){
-      const inputs = document.querySelectorAll('.otp-input');
-      const kodeInput = Array.from(inputs).map(i => i.value).join('');
-      if(kodeInput === kodeOTP){
-        showNotifAyu('Verifikasi berhasil!', 'sukses');
-        document.getElementById('btn-simpan-final').disabled = false;
-        document.getElementById('btn-simpan-final').classList.remove('bg-gray-400');
-        document.getElementById('btn-simpan-final').classList.add('bg-gradient-to-r', 'from-ijo-tosca-600', 'to-ungu-mewah-600');
-      } else {
-        showNotifAyu('Kode salah!', 'gagal');
-        document.querySelector('.otp-section').classList.add('animate-shake');
-        setTimeout(() => document.querySelector('.otp-section').classList.remove('animate-shake'), 500);
-      }
-    }
+  async function verifikasiKode(){
+  const inputs = document.querySelectorAll('.otp-input');
+  const kodeInput = Array.from(inputs).map(i => i.value).join('');
+
+  if(kodeInput === kodeOTP){
+    showNotifAyu('Verifikasi berhasil!', 'sukses');
+
+    // AUTO HIDE + KOSONGNO
+    document.getElementById('otp-section').classList.add('hidden');
+    inputs.forEach(i => i.value = '');
+    clearInterval(timerInterval);
+    document.getElementById('timer-otp').innerText = '';
+
+    document.getElementById('btn-simpan-final').disabled = false;
+    document.getElementById('btn-simpan-final').classList.remove('bg-gray-400');
+    document.getElementById('btn-simpan-final').classList.add('bg-gradient-to-r', 'from-ijo-tosca-600', 'to-ungu-mewah-600');
+  } else {
+    showNotifAyu('Kode salah!', 'gagal');
+    document.getElementById('otp-section').classList.add('animate-shake');
+    setTimeout(() => document.getElementById('otp-section').classList.remove('animate-shake'), 500);
+    inputs.forEach(i => i.value = '');
+    inputs[0].focus();
+  }
+}
 
     async function simpanProfil(e){
       e.preventDefault();
