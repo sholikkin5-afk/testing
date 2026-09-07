@@ -170,12 +170,7 @@
 
         <!-- TOMBOL 2: KIRIM ULANG - AWALE DI HIDE -->
         <button type="button" id="btn-kirim-ulang" onclick="kirimKodeVerifikasi(event)" class="mt-2 w-full bg-gray-400 text-white py-2 rounded-xl font-bold text-sm hidden" disabled>Kirim Ulang Kode</button>
-
-        <!-- TIMER -->
-        <p id="timer-otp" class="text-center text-xs text-slate-500 mt-2"></p>
       </div>
-
-      <!-- KOTAK OTP 6 DIGIT - AWALE DI HIDE -->
       <div id="otp-section" class="hidden">
         <label class="block text-sm font-semibold text-slate-700 mb-1.5">3. Masukkan Kode OTP <span class="text-red-500">*</span></label>
         <div class="flex justify-between gap-2">
@@ -348,12 +343,10 @@ const db = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANO
       const btnUlang = document.getElementById('btn-kirim-ulang');
 
       timerInterval = setInterval(() => {
-        document.getElementById('timer-otp').innerText = `Kirim ulang dalam ${sisa} detik`;
         btnUlang.innerText = `Kirim Ulang Kode (${sisa}s)`;
         sisa--;
         if(sisa < 0){
           clearInterval(timerInterval);
-          document.getElementById('timer-otp').innerText = '';
           btnUlang.innerText = 'Kirim Ulang Kode';
           btnUlang.disabled = false;
           btnUlang.classList.remove('bg-gray-400');
