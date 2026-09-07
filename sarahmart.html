@@ -342,15 +342,16 @@ const db = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANO
       document.getElementById('btn-simpan-final').classList.remove('bg-gray-400');
       document.getElementById('btn-simpan-final').classList.add('bg-gradient-to-r', 'from-ijo-tosca-600', 'to-ungu-mewah-600');
     }
-  } else {
+} else {
     // 4. NEK WES LENGKAP & VERIFIED -> POPUP GAK USAH MUNCUL
     document.getElementById('popupProfil').style.display = 'none';
-    showNotifAyu('Selamat datang kembali, ' + data.nama_lengkap, 'sukses');if(!sessionStorage.getItem('sudahDisapa')){
-  showNotifAyu('Selamat datang kembali, ' + data.nama_lengkap, 'sukses');
-  sessionStorage.setItem('sudahDisapa', 'true');
-}
-  }
-}
+
+    // NOTIF MEK METU 1X TOK PER LOGIN
+    if(!sessionStorage.getItem('sudahDisapa')){
+      showNotifAyu('Selamat datang kembali, ' + data.nama_lengkap, 'sukses');
+      sessionStorage.setItem('sudahDisapa', 'true');
+    }
+  }}
 
     function setupOTPInputs(){
       const inputs = document.querySelectorAll('.otp-input');
