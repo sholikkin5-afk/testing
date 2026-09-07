@@ -13,7 +13,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Supabase JS Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="config.js"></script> 
     <script>
         tailwind.config = {
             theme: {
@@ -157,7 +156,10 @@
 
     <!-- SKRIP INTEGRASI SUPABASE & LOGIKA APLIKASI -->
     <script>
-        const db = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+        const SUPABASE_URL = 'https://fbxfoorzeojsqnzcmvic.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_Xg3DLbSsRFTsU5ZjxIylkA_JP6pUpSK';
+
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         const REDIRECT_URL = 'sarahmart.html';
 
         // CEK SESI PAS BUKA HALAMAN - FITUR LAMA AMAN
