@@ -289,7 +289,7 @@ const db = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANO
       try {
         const response = await fetch('https://api.fonnte.com/send', {
           method: 'POST',
-          headers: { 'Authorization': FONNTE_TOKEN },
+          headers: { 'Authorization': CONFIG.FONNTE_TOKEN },
           body: new URLSearchParams({ target: noWA, message: pesan })
         });
         const result = await response.json();
